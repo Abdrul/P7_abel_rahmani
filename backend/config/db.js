@@ -1,4 +1,6 @@
 const { Sequelize, DataTypes} = require('sequelize');
+const UserModel = require('../model/userModel');
+
 
 const sequelize = new Sequelize(
     'groupomania',
@@ -10,14 +12,16 @@ const sequelize = new Sequelize(
     }
 );
 
+const User = UserModel(sequelize, DataTypes);
+
 const initDb = () => {
     return sequelize.sync({ force: true }) 
-    .then((_) => console.log("La base de donnée est bien synchro"))
-};
-
-
+    .then(() => {
+        console.log("La base de donnée est bien synchro")
+    })
+}
 
 
 module.exports = {
-    initDb
+    initDb, User
 };

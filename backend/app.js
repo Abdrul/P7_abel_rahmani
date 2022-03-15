@@ -2,8 +2,9 @@ const express = require('express');
 const morgan = require('morgan');
 const sequelize = require('./config/db');
 
+const userRoutes = require('./routes/userRoute');
+
 const app = express();
-const port = 3000;
 
 app
     .use(morgan("dev"))
@@ -11,5 +12,15 @@ app
 
 sequelize.initDb();
 
+app.use('/api/auth', userRoutes);
+// app.get('/ok', (req,res) => {
+//     res.send('ok')
+// })
 
-app.listen(port, () => console.log(`Connection success on port ${port}`));
+app.use(({res}) => {
+    const message = 'Impossible de trouver la ressource demandée ! Vous pouvez essayer une autre URL';
+    res.status(404).json({ message });
+});
+
+
+module.exports = app;

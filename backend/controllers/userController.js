@@ -8,7 +8,10 @@ exports.signup = (req, res) => {
     .then(hash => {
         User.create({
             email: req.body.email,
-            password: hash
+            password: hash,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            imageUrl: req.body.imageUrl
         })
         .then(() => res.status(201).json({ message: "utilisateur cree" }))
         .catch(error => {

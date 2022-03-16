@@ -1,5 +1,6 @@
 const { Sequelize, DataTypes} = require('sequelize');
 const UserModel = require('../model/userModel');
+const PostsModel = require('../model/postsModel');
 
 
 const sequelize = new Sequelize(
@@ -13,6 +14,9 @@ const sequelize = new Sequelize(
 );
 
 const User = UserModel(sequelize, DataTypes);
+const Posts = PostsModel(sequelize, DataTypes);
+
+Posts.belongsTo(User, { foreignKey: 'user_id' });
 
 const initDb = () => {
     return sequelize.sync({ force: true }) 
@@ -23,5 +27,5 @@ const initDb = () => {
 
 
 module.exports = {
-    initDb, User
+    initDb, User, Posts
 };

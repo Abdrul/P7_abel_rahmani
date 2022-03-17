@@ -1,9 +1,10 @@
+require('dotenv').config();
 const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
 
     const token = req.headers.authorization.split(' ')[1];
-    const decodedToken = jwt.verify(token, 'LEMOTDEPASSE', (error, decodedToken) => {
+    const decodedToken = jwt.verify(token, process.env.SECRET, (error, decodedToken) => {
         if(error) {
             const message = `L'utilisateur n'est pas autorisé à accéder à cette ressource`;
             return res.status(401).json({ message, data: error});

@@ -7,6 +7,12 @@ module.exports = (sequelize, DataTypes) => {
         },
         text: {
             type: DataTypes.STRING
+        },
+        picture: {
+            type: DataTypes.STRING,
+            validate: {
+                isUrl: {msg: "Utilisez une URL pour l'image"}
+            }
         }
     });
 };

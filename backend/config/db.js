@@ -3,10 +3,12 @@ const UserModel = require('../model/userModel');
 const PostsModel = require('../model/postsModel');
 
 
+
+
 const sequelize = new Sequelize(
     'groupomania',
-    'root',
-    '@MxiL93ouI',
+    `${process.env.DB_USER}`,
+    `${process.env.DB_PASSWORD}`,
     {
         host: "localhost",
         dialect: "mysql"

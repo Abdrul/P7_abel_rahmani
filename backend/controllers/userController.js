@@ -11,18 +11,18 @@ exports.signup = (req, res) => {
             email: req.body.email,
             password: hash,
             firstname: req.body.firstname,
-            lastname: req.body.lastname,
-            imageUrl: req.body.imageUrl
+            lastname: req.body.lastname
+            // picture: req.body.picture
         })
         .then(() => res.status(201).json({ message: "utilisateur cree" }))
         .catch(error => {
-            const message = `La tentavie à echoué`;
-            return res.json({ message, data: error })
+            const message = `La tentativee à echoué`;
+            return res.status(400).json({ message, data: error })
         });
     })
     .catch(error => {
         const message = `L'inscription à echoué cote serveur`;
-        return res.json({ message, data : error });
+        return res.status(500).json({ message, data : error });
     });
 };
 
@@ -32,13 +32,13 @@ exports.login = (req, res) => {
     .then(user => {
         if(!user) {
             const message = `L'email est incorrect`;
-            return res.json({ message });
+            return res.status(401).json({ message });
         };
         bcrypt.compare(req.body.password, user.password)
         .then(isPasswordValid => {
             if(!isPasswordValid) {
                 const message = `Le mot de passe est incorrect`;
-                return res.json({ message });
+                return res.status(401).json({ message });
             }
 
             const token = jwt.sign(
@@ -53,6 +53,6 @@ exports.login = (req, res) => {
     })
     .catch(error => {
         const message = `L'utilisateur n'as pas pu etre connecte`;
-        return res.json({ message, data: error});
+        return res.status(500).json({ message, data: error});
     });
 }

@@ -11,8 +11,8 @@ exports.getAllPosts = async (req, res) => {
     } catch(error) {
         const message = `Les posts ne sont pas accessible, réessayez dans quelques instants`;
         res.status(500).json({ message, data: error});
-    }
-}
+    };
+};
 
 
 
@@ -29,22 +29,23 @@ exports.getOnePost = async (req, res) => {
     } catch(error) {
         const message = `Le post n'as pas pu être récupéré`;
         res.status(500).json({ message, data: error });
-    }
-}
+    };
+};
 
 // Logique terminaison POST 
 
 
 exports.createPosts = async (req, res) => {
     try {
+        req.body.user_id = req.params.userId;
         const postsUser = await Posts.create(req.body);
         const message = `Votre posts à été crée`;
         res.json({ message, data: postsUser });
     } catch(error) {
         const message = `Votre posts n'as pas pu être ajouté`;
         res.status(500).json({ message, data:error});
-    }
-}
+    };
+};
 
 
 // logiqque terminaison PUT
@@ -59,8 +60,8 @@ exports.updatePosts = async (req, res) => {
     } catch(error) {
         const message = `Le post n'as pas pu être modifié`;
         res.status(500).json({ message, data: error });
-    }
-}
+    };
+};
 
 
 
@@ -79,5 +80,5 @@ exports.deletePosts = async (req, res) => {
     } catch(error) {
         const message = `Le posts n'as pas pu être supprimé`;
         res.status(500).json({ message, data: error });
-    }
-}
+    };
+};

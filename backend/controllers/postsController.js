@@ -1,5 +1,7 @@
 const { text } = require('express');
 const { Posts } = require('../config/db');
+const { Users } = require('../config/db');
+const { Op } = require('sequelize');
 const fs = require('fs');
 // Logique terminaison GET ALL
 
@@ -93,14 +95,35 @@ exports.updatePosts = async (req, res) => {
 //     }
 // }
     try {
-        const id = req.params.id
-        const postsUser = await Posts.update(req.body, { where: { id: id }});
-        const message = `Le post à bien été modiifé`;
+        if(req.file) {
+            const postsUser = await Posts.findByPk(req.params.id);
+            console.log(postsUser.imageUrl);
+            const filename = postsUser.imageUrl.split('/images')[1];
+            fs.unlink(`images/${filename}`, (err) => {
+                if (err) res.status(500).json({ err });
+            })
+        }
+
+        const postsObject = req.file ? 
+        {
+            text: req.body.text,
+            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+
+        } : { text: req.body.text };
+
+        // console.log(postsObject);
+
+        // const idUser = req.params.userId;
+        const id = req.params.id;
+        const postsUser = await Posts.update(postsObject, { where: { id: id/*, user_id: idUser*/ }});
+        console.log(postsObject);
+        const message = `Le post à bien été modifié`;
         res.json({ message, data: postsUser });
     } catch(error) {
         const message = `Le post n'as pas pu être modifié`;
         res.status(500).json({ message, data: error });
     };
+    // where: { [Op.and]: [ { id: id}, {user_id: idUser} ] } }
 };
 
 
@@ -136,4 +159,4 @@ exports.deletePosts = async (req, res) => {
         const message = `Le posts n'as pas pu être supprimé`;
         res.status(500).json({ message, data: error });
     }
-};
+}; 

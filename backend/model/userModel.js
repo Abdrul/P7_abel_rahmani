@@ -1,9 +1,9 @@
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define("User", {
         id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
+            defaultValue : DataTypes.UUIDV1,
             primaryKey: true,
-            autoIncrement: true,
             onDelete: 'CASCADE'
         },
         email: {
@@ -25,11 +25,11 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
-        // picture: {
-        //     type: DataTypes.STRING,
-        //     validate: {
-        //         isUrl: {msg: "Utilisez une URL pour l'image"}
-        //     }
-        // }
+        imageUrl: {
+            type: DataTypes.STRING,
+            validate: {
+                isUrl: {msg: "Utilisez une URL pour l'image"}
+            }
+        }
     });
 };

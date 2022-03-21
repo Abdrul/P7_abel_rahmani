@@ -18,7 +18,7 @@ const sequelize = new Sequelize(
 const User = UserModel(sequelize, DataTypes);
 const Posts = PostsModel(sequelize, DataTypes);
 
-User.hasMany(Posts, { foreignKey: 'user_id' });
+User.hasMany(Posts, { foreignKey: 'user_id' /*, onDelete: 'CASCADE' */});
 
 const initDb = () => {
     return sequelize.sync({ force: true }) 

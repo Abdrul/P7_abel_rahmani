@@ -12,7 +12,6 @@ exports.signup = (req, res) => {
             password: hash,
             firstname: req.body.firstname,
             lastname: req.body.lastname
-            // picture: req.body.picture
         })
         .then(() => res.status(201).json({ message: "utilisateur cree" }))
         .catch(error => {

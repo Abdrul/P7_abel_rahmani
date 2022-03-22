@@ -64,61 +64,32 @@ exports.createPosts = async (req, res) => {
 
 
 exports.updatePosts = async (req, res) => {
-//     try {
-//         if(req.file) {
-//             const postsUser = await Posts.findByPk(req.params.id);
-//             const filename = Posts.imageUrl.split("/images/")[1];
-//             fs.unlink(`images/${filename}`, (error) => {
-//                 if(error) throw error;
-//             });
-//             res.json({ message, data: postsUser });
-//         };
-//         try {
-//             const id = req.params.id
-//             const postsObject = req.file ?
-//             {
-//                 ...req.body,
-//                 imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-//             } : { ...req.body};
-    
-//             const postsUser = await Posts.update(postsObject, { where: { id: id }});
-//             const message = `Le post à bien été modiifé`;
-//             res.json({ message, data: postsUser });
-//         } catch (error){
-//             const message = `Le post n'as pas pu être modifié`;
-//         res.status(500).json({ message, data: error });
-//         }
-
-//     } catch(error) {
-//         const message = `L'image n'as pas marche`;
-//         res.status(400).json({ message, data: error });
-//     }
-// }
     try {
         if(req.file) {
             const postsUser = await Posts.findByPk(req.params.id);
-            console.log(postsUser.imageUrl);
-            const filename = postsUser.imageUrl.split('/images')[1];
+            const filename = postsUser.imageUrl.split('images')[1];
+            console.log(filename);
             fs.unlink(`images/${filename}`, (err) => {
                 if (err) res.status(500).json({ err });
             })
         }
 
-        const postsObject = req.file ? 
-        {
-            text: req.body.text,
-            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-
-        } : { text: req.body.text };
-
-        // console.log(postsObject);
-
-        // const idUser = req.params.userId;
-        const id = req.params.id;
-        const postsUser = await Posts.update(postsObject, { where: { id: id/*, user_id: idUser*/ }});
-        console.log(postsObject);
-        const message = `Le post à bien été modifié`;
-        res.json({ message, data: postsUser });
+        const postsUsersCheck  = await Posts.findByPk(req.params.id)
+        if(req.params.userId !== postsUsersCheck.user_id) {
+            console.log("tu n'as pas le droit");
+        } else {
+            console.log("tu as le droit");
+            const postsObject = req.file ? 
+            {
+                text: req.body.text,
+                imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+            } : { text: req.body.text };
+            // const idUser = req.params.userId;
+            const id = req.params.id;
+            const postsUser = await Posts.update(postsObject, { where: { id: id/*, user_id: idUser*/ }});
+            const message = `Le post à bien été modifié`;
+            res.json({ message, data: postsUser });
+        }
     } catch(error) {
         const message = `Le post n'as pas pu être modifié`;
         res.status(500).json({ message, data: error });
@@ -132,19 +103,6 @@ exports.updatePosts = async (req, res) => {
 
 
 exports.deletePosts = async (req, res) => {
-    // try {
-    //     const postsUser = await Posts.findByPk(req.params.id);
-    //     const postsDeleted = postsUser;
-    //     return Posts.destroy({ where: { id: postsUser.id }})
-    //     .then(() => {
-    //         const message = `Le posts avec l'identifiant n°${postsDeleted.id} à bien été supprimé`;
-    //         res.json({ message, data: postsDeleted});
-    //     });
-    // } catch(error) {
-    //     const message = `Le posts n'as pas pu être supprimé`;
-    //     res.status(500).json({ message, data: error });
-    // };
-
     try {
         const postsUser = await Posts.findByPk(req.params.id);
             const filename = postsUser.imageUrl.split('/images')[1];

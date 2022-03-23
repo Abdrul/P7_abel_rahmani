@@ -1,8 +1,7 @@
-const { text } = require('express');
 const { Posts } = require('../config/db');
-const { Users } = require('../config/db');
-const { Op } = require('sequelize');
 const fs = require('fs');
+
+
 // Logique terminaison GET ALL
 
 
@@ -16,9 +15,6 @@ exports.getAllPosts = async (req, res) => {
         res.status(500).json({ message, data: error});
     };
 };
-
-
-
 
 
 // Logique terminaison GET ONE 
@@ -67,6 +63,9 @@ exports.updatePosts = async (req, res) => {
     try {
         const id = req.params.id;
         const postsUsersCheck  = await Posts.findByPk(id);
+        // const postsUsersCheck  = await Posts.findOne({ 
+        //     where: {[Op.and]: [{ id: id }, { user_id: req.params.userId }]}
+        // });
 
         if(req.params.userId !== postsUsersCheck.user_id) {
 
@@ -109,7 +108,7 @@ exports.deletePosts = async (req, res) => {
     try {
         const id = req.params.id;
         const postsUser = await Posts.findByPk(id);
-        
+
         if(req.params.userId !== postsUser.user_id) {
             const message = `Vous n'avez pas l'authorisation pour cette action`;
             res.status(403).json({ message, data: postsUser});

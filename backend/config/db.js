@@ -21,6 +21,7 @@ const Comments = CommentsModel(sequelize, DataTypes);
 
 User.hasMany(Posts, { foreignKey: 'user_id' /*, onDelete: 'CASCADE' */});
 Posts.hasMany(Comments, { foreignKey: 'comment_id' });
+User.hasMany(Comments, { foreignKey: 'user_comment_id'});
 
 const initDb = () => {
     return sequelize.sync({ force: true }) 

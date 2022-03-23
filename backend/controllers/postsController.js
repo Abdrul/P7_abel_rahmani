@@ -52,7 +52,7 @@ exports.createPosts = async (req, res) => {
             imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
         });
         const message = `Votre posts à été crée`;
-        res.json({ message, data: postsUser });
+        res.status(201).json({ message, data: postsUser });
     } catch(error) {
         const message = `Votre posts n'as pas pu être ajouté`;
         res.status(500).json({ message, data:error});
@@ -65,36 +65,39 @@ exports.createPosts = async (req, res) => {
 
 exports.updatePosts = async (req, res) => {
     try {
-        if(req.file) {
-            const postsUser = await Posts.findByPk(req.params.id);
-            const filename = postsUser.imageUrl.split('images')[1];
-            console.log(filename);
-            fs.unlink(`images/${filename}`, (err) => {
-                if (err) res.status(500).json({ err });
-            })
-        }
+        const id = req.params.id;
+        const postsUsersCheck  = await Posts.findByPk(id);
 
-        const postsUsersCheck  = await Posts.findByPk(req.params.id)
         if(req.params.userId !== postsUsersCheck.user_id) {
-            console.log("tu n'as pas le droit");
+
+            const message = `Vous n'avez pas l'authorisation pour cette action`;
+            return res.status(403).json({ message, data: postsUsersCheck});
+
         } else {
-            console.log("tu as le droit");
+            // si dans la bdd il y'a deja un fichier on le supprime et on le remplace
+            if(req.file) {
+                const filename = postsUsersCheck.imageUrl.split('/images')[1];
+                console.log(filename);
+                fs.unlink(`images/${filename}`, (err) => {
+                    if (err) res.status(500).json({ err });
+                })
+            }
+
             const postsObject = req.file ? 
             {
                 text: req.body.text,
                 imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
             } : { text: req.body.text };
-            // const idUser = req.params.userId;
-            const id = req.params.id;
-            const postsUser = await Posts.update(postsObject, { where: { id: id/*, user_id: idUser*/ }});
+
+            const postsUser = await Posts.update(postsObject, { where: { id: id }});
             const message = `Le post à bien été modifié`;
             res.json({ message, data: postsUser });
         }
+
     } catch(error) {
         const message = `Le post n'as pas pu être modifié`;
         res.status(500).json({ message, data: error });
     };
-    // where: { [Op.and]: [ { id: id}, {user_id: idUser} ] } }
 };
 
 
@@ -104,15 +107,22 @@ exports.updatePosts = async (req, res) => {
 
 exports.deletePosts = async (req, res) => {
     try {
-        const postsUser = await Posts.findByPk(req.params.id);
+        const id = req.params.id;
+        const postsUser = await Posts.findByPk(id);
+        
+        if(req.params.userId !== postsUser.user_id) {
+            const message = `Vous n'avez pas l'authorisation pour cette action`;
+            res.status(403).json({ message, data: postsUser});
+        } 
             const filename = postsUser.imageUrl.split('/images')[1];
             fs.unlink(`images/${filename}`, (err) => {
                 if (err) res.status(500).json({ err });
-            })
+            });
             
             const postsUserDelete = Posts.destroy({where: { id: postsUser.id }})
             const message = `Le posts avec l'identifiant n°${postsUser.id} à bien été supprimé`;
             res.json({ message, data: postsUserDelete});
+
     } catch (error) {
         const message = `Le posts n'as pas pu être supprimé`;
         res.status(500).json({ message, data: error });

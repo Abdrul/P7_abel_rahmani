@@ -24,12 +24,6 @@ module.exports = (sequelize, DataTypes) => {
         lastname: {
             type: DataTypes.STRING,
             allowNull: false
-        },
-        imageUrl: {
-            type: DataTypes.STRING,
-            validate: {
-                isUrl: {msg: "Utilisez une URL pour l'image"}
-            }
         }
     });
 };

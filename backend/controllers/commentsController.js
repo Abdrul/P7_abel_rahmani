@@ -1,5 +1,4 @@
 const { Comments } = require('../config/db');
-const { Posts } = require('../config/db');
 const fs = require('fs');
 
 
@@ -37,8 +36,8 @@ exports.getOneComment = async (req, res) => {
 
 exports.createComments = async (req, res) => {
     try {
-        req.body.user_comment_id = req.params.userId; 
-        req.body.comment_id = req.params.id;
+        // req.body.user_id = req.params.userId; 
+        // req.body.post_id = req.params.id;
 
         const commentsBody = req.body
         const commentsUser = await Comments.create({
@@ -62,7 +61,7 @@ exports.updateComments = async (req, res) => {
         const id = req.params.id;
         const commentsUserCheck  = await Comments.findByPk(id);
 
-        if(req.params.userId !== commentsUserCheck.user_comment_id) {
+        if(req.params.userId !== commentsUserCheck.user_id) {
 
             const message = `Vous n'avez pas l'authorisation pour cette action`;
             return res.status(403).json({ message, data: commentsUserCheck});
@@ -104,7 +103,7 @@ exports.deleteComments = async (req, res) => {
         const id = req.params.id;
         const commentUser = await Comments.findByPk(id);
 
-        if(req.params.userId !== commentUser.user_comment_id) {
+        if(req.params.userId !== commentUser.user_id) {
             const message = `Vous n'avez pas l'authorisation pour cette action`;
             res.status(403).json({ message, data: commentUser});
         } 

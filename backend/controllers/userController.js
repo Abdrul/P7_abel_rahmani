@@ -1,57 +1,32 @@
-// require('dotenv').config();
+// Récuperer tout les user 
+// Recuperer un user
+// Update un user
+// Delete user
+
 const { User } = require('../config/db');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 
-
-exports.signup = (req, res) => {
-    bcrypt.hash(req.body.password, 10)
-    .then(hash => {
-        User.create({
-            email: req.body.email,
-            password: hash,
-            firstname: req.body.firstname,
-            lastname: req.body.lastname
-        })
-        .then(() => res.status(201).json({ message: "utilisateur cree" }))
-        .catch(error => {
-            const message = `La tentativee à echoué`;
-            return res.status(400).json({ message, data: error })
+exports.allUsers = async (req, res) => {
+    try {
+        const user = await User.findAll({
+            attributes : { exclude: ['password'] }
         });
-    })
-    .catch(error => {
-        const message = `L'inscription à echoué cote serveur`;
-        return res.status(500).json({ message, data : error });
-    });
+        const message = `Tous les users on été récupérée`;
+        res.json({ message, data: user });
+    } catch(error) {
+        const message = `Les users ne sont pas accessible, réessayez dans quelques instants`;
+        res.status(500).json({ message, data: error});
+    };
 };
 
-
-exports.login = (req, res) => {
-    User.findOne({ where: { email: req.body.email }})
-    .then(user => {
-        if(!user) {
-            const message = `L'email est incorrect`;
-            return res.status(401).json({ message });
-        };
-        bcrypt.compare(req.body.password, user.password)
-        .then(isPasswordValid => {
-            if(!isPasswordValid) {
-                const message = `Le mot de passe est incorrect`;
-                return res.status(401).json({ message });
-            }
-
-            const token = jwt.sign(
-                { userId: user.id },
-                `${process.env.SECRET}`,
-                {expiresIn: '24h'}
-            )
-
-            const message = `Vous avez été connecté avec succès`;
-            return res.json({ message, data: user, token })
-        })
-    })
-    .catch(error => {
-        const message = `L'utilisateur n'as pas pu etre connecte`;
-        return res.status(500).json({ message, data: error});
-    });
-}
+exports.oneUser = async (req, res) => {
+    try {
+        const user = await User.findByPk(req.params.id, {
+            attributes : { exclude: ['password'] }
+        });
+        const message = `Un user à été trouvé`;
+        res.json({ message, data: user });
+    } catch(error) {
+        const message = `Le user n'as pas pu être récupéré`;
+        res.status(500).json({ message, data: error });
+    };
+};

@@ -62,7 +62,8 @@ exports.createPosts = async (req, res) => {
 exports.updatePosts = async (req, res) => {
 
     try {
-            // si dans la bdd il y'a deja un fichier on le supprime et on le remplace
+            const id = req.params.id;
+            const postsUsersCheck  = await Posts.findByPk(id);
             if(req.file) {
                 const filename = postsUsersCheck.imageUrl.split('/images')[1];
                 console.log(filename);
@@ -94,14 +95,17 @@ exports.updatePosts = async (req, res) => {
 
 exports.deletePosts = async (req, res) => {
     try {
-            const filename = postsUser.imageUrl.split('/images')[1];
+            const id = req.params.id;
+            const postsDelete  = await Posts.findByPk(id);
+
+            const filename = postsDelete.imageUrl.split('/images')[1];
             fs.unlink(`images/${filename}`, (err) => {
                 if (err) res.status(500).json({ err });
             });
             
-            const postsUserDelete = Posts.destroy({where: { id: postsUser.id }})
-            const message = `Le posts avec l'identifiant n°${postsUser.id} à bien été supprimé`;
-            res.json({ message, data: postsUserDelete});
+            Posts.destroy({where: { id: postsDelete.id }})
+            const message = `Le posts avec l'identifiant n°${postsDelete.id} à bien été supprimé`;
+            res.json({ message, data: postsDelete});
 
     } catch (error) {
         const message = `Le posts n'as pas pu être supprimé`;

@@ -99,19 +99,11 @@ exports.updateComments = async (req, res) => {
 
 exports.deleteComments = async (req, res) => {
     try {
-        const id = req.params.id;
-        const commentUser = await Comments.findByPk(id);
-
-        if(req.params.userId !== commentUser.user_id) {
-            const message = `Vous n'avez pas l'authorisation pour cette action`;
-            res.status(403).json({ message, data: commentUser});
-        } 
-            const filename = commentUser.imageUrl.split('/images')[1];
-            fs.unlink(`images/${filename}`, (err) => {
-                if (err) res.status(500).json({ err });
-            });
-            
-            const postsUserDelete = Posts.destroy({where: { id: commentUser.id }})
+            // const filename = commentUser.imageUrl.split('/images')[1];
+            // fs.unlink(`images/${filename}`, (err) => {
+            //     if (err) res.status(500).json({ err });
+            // });
+            const commentDelete = Comments.destroy({where: { id: commentUser.id }})
             const message = `Le commentaire avec l'identifiant n°${commentUser.id} à bien été supprimé`;
             res.json({ message, data: postsUserDelete});
 

@@ -1,5 +1,5 @@
 const { Comments } = require('../config/db');
-const fs = require('fs');
+
 
 
 // Logique terminaison GET ALL
@@ -36,13 +36,12 @@ exports.getOneComment = async (req, res) => {
 
 exports.createComments = async (req, res) => {
     try {
-        // req.body.user_id = req.params.userId; 
+        req.body.user_id = req.params.userId; 
         // req.body.post_id = req.params.id;
 
         const commentsBody = req.body
         const commentsUser = await Comments.create({
             ...commentsBody,
-            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
         });
         const message = `Votre commentaire à été crée`;
         res.status(201).json({ message, data: commentsUser });

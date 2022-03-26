@@ -30,3 +30,21 @@ exports.oneUser = async (req, res) => {
         res.status(500).json({ message, data: error });
     };
 };
+
+exports.updateUser = async (req, res) => {
+
+};
+
+
+exports.deleteUser = async (req, res) => {
+
+};
+
+
+exports.followUser = async (req, res) => {
+
+};
+
+exports.unfollowUser = async (req, res) => {
+
+};

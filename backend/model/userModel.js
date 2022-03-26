@@ -11,11 +11,22 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             unique : {
                 msg : 'Le nom est déjà pris.'
+            },
+            validate: {
+                isEmail: {msg: "Choisir un email valide"}
             }
         },
         password: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            validate : {
+                notNull : {msg: "Un mot de passe est requis pour s'inscrire"},
+                notEmpty: {msg: "Un mot de passe doit être remplie"},
+                // len : {
+                //     args: [8, 100],
+                //     msg: "8 caraterer"
+                // }
+            }
         },
         firstname: {
             type: DataTypes.STRING,
@@ -23,6 +34,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         lastname: {
             type: DataTypes.STRING,
+            allowNull: false
+        },
+        admin : {
+            type : DataTypes.BOOLEAN,
             allowNull: false
         }
     });

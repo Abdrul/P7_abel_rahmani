@@ -60,18 +60,6 @@ exports.createPosts = async (req, res) => {
 
 
 exports.updatePosts = async (req, res) => {
-    const id = req.params.id;
-    const postsUsersCheck  = await Posts.findByPk(req.params.id);
-    // const postsUsersCheck  = await Posts.findOne({ 
-    //     where: {[Op.and]: [{ id: id }, { user_id: req.params.userId }]}
-    // });
-
-    if(req.params.userId !== postsUsersCheck.user_id) {
-
-        const message = `Vous n'avez pas l'authorisation pour cette action`;
-        return res.status(403).json({ message, data: postsUsersCheck});
-
-    }
 
     try {
             // si dans la bdd il y'a deja un fichier on le supprime et on le remplace
@@ -105,14 +93,6 @@ exports.updatePosts = async (req, res) => {
 
 
 exports.deletePosts = async (req, res) => {
-    const id = req.params.id;
-    const postsUser = await Posts.findByPk(id);
-
-    if(req.params.userId !== postsUser.user_id) {
-        const message = `Vous n'avez pas l'authorisation pour cette action`;
-        return res.status(403).json({ message, data: postsUser});
-    } 
-
     try {
             const filename = postsUser.imageUrl.split('/images')[1];
             fs.unlink(`images/${filename}`, (err) => {

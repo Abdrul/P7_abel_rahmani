@@ -1,5 +1,6 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
+const { User } = require('../config/db'); 
 
 module.exports = (req, res, next) => {
     const authorizationHeader = req.headers.authorization;
@@ -25,4 +26,26 @@ module.exports = (req, res, next) => {
             next();
         };
     });
+
+    // const token2 = req.cookies.jwt; 
+    // console.log(token2);
+    // if(token2) {
+    //     jwt.verify(token2, process.env.SECRET, async (err, docs) => {
+    //         if(err) {
+    //             res.locals.user = null;
+    //             res.clearCookie("jwt");
+    //             next();
+    //         } else {
+    //             let user2 = await User.findOne(docs.id);
+    //             res.locals.user = user2;
+    //             console.log(res.locals.user);
+    //             next();
+    //         };
+    //     });
+    // } else {
+    //     res.locals.user = null;
+    //     next();
+    // }
 };
+
+

@@ -1,6 +1,7 @@
 const express = require('express');
 require('dotenv').config();
 const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
 const sequelize = require('./config/db');
 const path = require('path');
 
@@ -13,7 +14,8 @@ const app = express();
 
 app
     .use(morgan("dev"))
-    .use(express.json());
+    .use(express.json())
+    .use(cookieParser());
 
 sequelize.initDb();
 

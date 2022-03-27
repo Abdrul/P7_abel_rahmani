@@ -21,11 +21,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             validate : {
                 notNull : {msg: "Un mot de passe est requis pour s'inscrire"},
-                notEmpty: {msg: "Un mot de passe doit être remplie"},
-                // len : {
-                //     args: [8, 100],
-                //     msg: "8 caraterer"
-                // }
+                notEmpty: {msg: "Un mot de passe doit être remplie"}
             }
         },
         firstname: {

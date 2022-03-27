@@ -32,12 +32,31 @@ exports.oneUser = async (req, res) => {
 };
 
 exports.updateUser = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const user = await User.update(req.body, { where: { id: id }});
+        const message = `Le user à bien été modifié`;
+        res.json({ message, data: user });
 
+    } catch(error) {
+        const message = `Le user n'as pas pu être modifié`;
+        res.status(500).json({ message, data: error });
+    };
 };
 
 
 exports.deleteUser = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const userDelete  = await User.findByPk(id);
+        User.destroy({where: { id: userDelete.id }})
+        const message = `Le user avec l'identifiant n°${userDelete.id} à bien été supprimé`;
+        res.json({ message, data: User});
 
+    } catch (error) {
+        const message = `Le user n'as pas pu être supprimé`;
+        res.status(500).json({ message, data: error });
+    }
 };
 
 

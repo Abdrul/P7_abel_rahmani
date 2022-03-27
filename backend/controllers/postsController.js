@@ -63,9 +63,9 @@ exports.updatePosts = async (req, res) => {
 
     try {
             const id = req.params.id;
-            const postsUsersCheck  = await Posts.findByPk(id);
+            const postsFs  = await Posts.findByPk(id);
             if(req.file) {
-                const filename = postsUsersCheck.imageUrl.split('/images')[1];
+                const filename = postsFs.imageUrl.split('/images')[1];
                 console.log(filename);
                 fs.unlink(`images/${filename}`, (err) => {
                     if (err) res.status(500).json({ err });
@@ -78,9 +78,9 @@ exports.updatePosts = async (req, res) => {
                 imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
             } : { text: req.body.text };
 
-            const postsUser = await Posts.update(postsObject, { where: { id: id }});
+            const postsUpdate = await Posts.update(postsObject, { where: { id: id }});
             const message = `Le post à bien été modifié`;
-            res.json({ message, data: postsUser });
+            res.json({ message, data: postsUpdate });
 
     } catch(error) {
         const message = `Le post n'as pas pu être modifié`;
@@ -103,7 +103,7 @@ exports.deletePosts = async (req, res) => {
                 if (err) res.status(500).json({ err });
             });
             
-            Posts.destroy({where: { id: postsDelete.id }})
+            Posts.destroy({ where: { id: postsDelete.id }})
             const message = `Le posts avec l'identifiant n°${postsDelete.id} à bien été supprimé`;
             res.json({ message, data: postsDelete});
 

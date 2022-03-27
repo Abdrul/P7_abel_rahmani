@@ -1,7 +1,5 @@
 const { Comments } = require('../config/db');
 
-
-
 // Logique terminaison GET ALL
 
 
@@ -58,33 +56,9 @@ exports.createComments = async (req, res) => {
 exports.updateComments = async (req, res) => {
     try {
         const id = req.params.id;
-        const commentsUserCheck  = await Comments.findByPk(id);
-
-        if(req.params.userId !== commentsUserCheck.user_id) {
-
-            const message = `Vous n'avez pas l'authorisation pour cette action`;
-            return res.status(403).json({ message, data: commentsUserCheck});
-
-        } else {
-            // si dans la bdd il y'a deja un fichier on le supprime et on le remplace
-            if(req.file) {
-                const filename = commentsUserCheck.imageUrl.split('/images')[1];
-                console.log(filename);
-                fs.unlink(`images/${filename}`, (err) => {
-                    if (err) res.status(500).json({ err });
-                })
-            }
-
-            const commentsObject = req.file ? 
-            {
-                text: req.body.text,
-                imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-            } : { text: req.body.text };
-
-            const commentsUser = await Comments.update(commentsObject, { where: { id: id }});
-            const message = `Le commentaire à bien été modifié`;
-            res.json({ message, data: commentsUser });
-        }
+        const commentsUser = await Comments.update(req.body, { where: { id: id }});
+        const message = `Le commentaire à bien été modifié`;
+        res.json({ message, data: commentsUser });
 
     } catch(error) {
         const message = `Le commentaire n'as pas pu être modifié`;
@@ -99,13 +73,11 @@ exports.updateComments = async (req, res) => {
 
 exports.deleteComments = async (req, res) => {
     try {
-            // const filename = commentUser.imageUrl.split('/images')[1];
-            // fs.unlink(`images/${filename}`, (err) => {
-            //     if (err) res.status(500).json({ err });
-            // });
-            const commentDelete = Comments.destroy({where: { id: commentUser.id }})
-            const message = `Le commentaire avec l'identifiant n°${commentUser.id} à bien été supprimé`;
-            res.json({ message, data: postsUserDelete});
+        const id = req.params.id;
+        const commentDelete  = await Posts.findByPk(id);
+        Comments.destroy({where: { id: commentDelete.id }})
+        const message = `Le commentaire avec l'identifiant n°${commentDelete.id} à bien été supprimé`;
+        res.json({ message, data: Comments});
 
     } catch (error) {
         const message = `Le posts n'as pas pu être supprimé`;

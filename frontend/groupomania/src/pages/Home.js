@@ -1,15 +1,13 @@
 import React from 'react'
 import './Home.css'
-import Navbar from '../components/Navbar/Navbar'
-import SignIn from '../components/AuthForm/SignIn'
-import SignUp from '../components/AuthForm/SignUp'
+
+
 
 export default function Home() {
     return (
         <div>
 
-            <Navbar />
-
+            <h1>Bienvenue sur le site</h1>
 
         </div>
     )

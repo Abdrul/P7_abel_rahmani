@@ -1,7 +1,10 @@
 import React,{useState, useRef} from 'react'
 import './AuthForm.css'
+import { Navigate, useNavigate } from 'react-router-dom';
 
 export default function SignIn() {
+
+    const navigate = useNavigate();
 
     const [error, setError] = useState('');
 
@@ -20,21 +23,27 @@ export default function SignIn() {
         const password = inputs.current[1].value;
         
         try {
-        
-            let response = await fetch('http://localhost:8080/api/auth/login', {
+
+            if(email, password) {
+                            
+                let response = await fetch('http://localhost:8080/api/auth/login', {
                     method: 'POST',
                     body : JSON.stringify({
                         email: email,
                         password: password
                     }),
-                        headers : {
-                            "Content-Type": "application/json",
-                        },
+                    headers : {
+                        "Content-Type": "application/json",
+                    },
                 })
-
-            console.log(await response.json()); 
-            return setError(await response.json()) 
-        
+                
+                let data = await response.json();
+                navigate('/home')
+                return data
+            } else {
+                setError('Email ou mot de passe invalide')
+            }
+                
         } catch(error) {
             console.log(error);
         };
@@ -50,10 +59,13 @@ export default function SignIn() {
 
                     <h2>Connexion</h2>
 
+                    <p className='error-sign'>
+                    {error}
+                    </p>
+
                     <label htmlFor="mail">Votre email</label>
                     <input ref={addInputs} type="email" id='mail' />
 
-                    {error}
                     <label htmlFor="psw">Votre mot de passe</label>
                     <input ref={addInputs} type="password" id='psw'/>
 

@@ -1,7 +1,10 @@
 import React, {useState, useRef} from 'react'
 import './AuthForm.css'
+import { useNavigate } from 'react-router-dom';
 
 export default function SignUp() {
+
+    const navigate = useNavigate();
 
     const [error, setError] = useState('');
 
@@ -14,7 +17,7 @@ export default function SignUp() {
     };
 
     const toggleSignIn = () => {
-        
+
     }
     
     
@@ -31,19 +34,24 @@ export default function SignUp() {
         const password = inputs.current[2].value;
         
         try {
-        
-            let response = await fetch('http://localhost:8080/api/auth/signup', {
+
+            if(email, firstname, password) {
+                let response = await fetch('http://localhost:8080/api/auth/signup', {
                     method: 'POST',
                     body : JSON.stringify({
                         email: email,
                         password: password,
                         firstname: firstname
                     }),
-                        headers : {
-                            "Content-Type": "application/json",
-                        },
-                })
-            return await response.json();
+                    headers : {
+                        "Content-Type": "application/json",
+                    },
+                });
+                navigate('/home')
+                return await response.json();
+            } else {
+                setError('Tout les champs ne sont pas remplies')
+            }
         
         } catch(error) {
             console.log(error);
@@ -60,6 +68,10 @@ export default function SignUp() {
 
                     <h2>Inscription</h2>
 
+                    <p className='error-sign'>
+                    {error}
+                    </p>
+                    
                     <label htmlFor="mail">Votre email</label>
                     <input ref={addInputs} type="email" id='mail' />
 
@@ -68,7 +80,6 @@ export default function SignUp() {
                     
                     <label htmlFor="psw">Votre mot de passe</label>
                     <input ref={addInputs} type="password" id='psw'/>
-                    {error}
                     <label htmlFor="confirm-psw">Confirmez votre mot de passe</label>
                     <input ref={addInputs} type="password" id='confirm-psw'/>
 

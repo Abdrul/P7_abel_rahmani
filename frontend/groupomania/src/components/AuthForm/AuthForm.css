@@ -1,0 +1,54 @@
+.global-modal {
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 30px;
+}
+
+
+.form-auth h2 {
+    text-align: center;
+    margin: 0;
+    padding-bottom: 10px;
+}
+
+.form-auth label {
+    text-align: center;
+    padding: 10px 0;
+}
+
+.form-auth input {
+    border-radius: 5px;
+    border: 1px solid rgba(0,0,0,0.2);
+}
+
+.form-auth label, .form-auth input {
+    display: block;
+    width: 100%;
+    font-size: 20px;
+}
+
+.btn-sign {
+    display: block;
+    width: 80%;
+    padding: 10px 0;
+    margin: 25px auto;
+    font-size: 20px;
+    border-radius: 5px; 
+    border: none;
+    cursor: pointer;
+    background-color: #333;
+    color: #f1f1f1;
+}
+
+.btn-log {
+    display: block;
+    width: 80%;
+    padding: 10px 0;
+    margin: 25px auto;
+    font-size: 20px;
+    border-radius: 5px; 
+    border: none;
+    cursor: pointer;
+    background-color: #333;
+    color: #f1f1f1;
+}

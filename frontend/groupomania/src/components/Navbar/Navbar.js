@@ -34,8 +34,8 @@ export default function Navbar() {
 
             <nav className='nav'>
 
-                <button id="login" onClick={handleModalsIn} className={signIn ? "btn-active" : "button-p"}>Connexion</button>
-                <button id="register" onClick={handleModalsUp} className={signUp ? "btn-active" : "button-p"}>Inscription</button>
+                <button id="login" onClick={handleModalsIn} className={signIn ? "btn-active" : "button-passive"}>Connexion</button>
+                <button id="register" onClick={handleModalsUp} className={signUp ? "btn-active" : "button-passive"}>Inscription</button>
 
             </nav>
 

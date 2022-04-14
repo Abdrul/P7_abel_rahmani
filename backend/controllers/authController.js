@@ -17,7 +17,7 @@ exports.signup = (req, res) => {
         })
         .then(() => res.status(201).json({ message: "utilisateur cree" }))
         .catch(error => {
-            const message = `La tentativee à echoué`;
+            const message = `La tentative à échouée`;
             return res.status(400).json({ message, data: error })
         });
     })

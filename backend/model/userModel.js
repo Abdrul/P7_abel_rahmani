@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
             unique : {
-                msg : 'Le nom est déjà pris.'
+                msg : 'Le mail est déjà pris.'
             },
             validate: {
                 isEmail: {msg: "Choisir un email valide"}
@@ -20,13 +20,18 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
             validate : {
-                notNull : {msg: "Un mot de passe est requis pour s'inscrire"},
-                notEmpty: {msg: "Un mot de passe doit être remplie"}
+                len : {
+                    args: [8, 80],
+                    msg: "Le mot de passe doit faire 8 caractères minimum"
+                }
             }
         },
         firstname: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            validate :{
+                isAlpha: true,
+            }
         },
         // lastname: {
         //     type: DataTypes.STRING,

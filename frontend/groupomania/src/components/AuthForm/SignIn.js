@@ -1,11 +1,13 @@
 import React,{useState, useRef} from 'react'
 import './AuthForm.css'
 import { Navigate, useNavigate } from 'react-router-dom';
+import SignUp from './SignUp';
 
 export default function SignIn() {
 
     const navigate = useNavigate();
 
+    const [upAcc, setUpAcc] = useState(false);
     const [error, setError] = useState('');
 
     const inputs = useRef([]);
@@ -15,6 +17,10 @@ export default function SignIn() {
             inputs.current.push(element);
         };
     }; 
+
+    const toggleSignUp = () => {
+        setUpAcc(true);
+    };
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -38,12 +44,25 @@ export default function SignIn() {
                 })
                 
                 let data = await response.json();
-                navigate('/home')
+
+                console.log(data.token);
+
+                if(data.message === "L'email est incorrect") {
+                    setError(data.message)
+                } else if(data.message === "Le mot de passe est incorrect") {
+                    setError(data.message)
+                } else {
+                    const token = data.token;
+                    localStorage.setItem('token', token);
+                    navigate('/home')
+                }
+
                 return data
             } else {
-                setError('Email ou mot de passe invalide')
+                setError('Veuillez remplir les champs')
             }
-                
+
+            
         } catch(error) {
             console.log(error);
         };
@@ -51,32 +70,39 @@ export default function SignIn() {
 
 
     return (
+    <>
+
+        {upAcc ? <SignUp/> :
+        
         <div className='global-modal'>
-
-            <div className="container-modal">
-
-                <form onSubmit={handleSubmit} className="form-auth">
-
-                    <h2>Connexion</h2>
-
-                    <p className='error-sign'>
-                    {error}
-                    </p>
-
-                    <label htmlFor="mail">Votre email</label>
-                    <input ref={addInputs} type="email" id='mail' />
-
-                    <label htmlFor="psw">Votre mot de passe</label>
-                    <input ref={addInputs} type="password" id='psw'/>
-
-                    <button className='btn-log'>Se connecter</button>
-
-                </form>
-
-                <p className='bottom-help-txt'>Vous n'avez pas de compte ?</p>
-
-            </div>
-
+        
+        <div className="container-modal">
+        
+        <form onSubmit={handleSubmit} className="form-auth">
+        
+        <h2>Connexion</h2>
+        
+        <p className='error-sign'>
+        {error}
+        </p>
+        
+        <label htmlFor="mail">Votre email</label>
+        <input ref={addInputs} type="email" id='mail' />
+        
+        <label htmlFor="psw">Votre mot de passe</label>
+        <input ref={addInputs} type="password" id='psw'/>
+        
+        <button className='btn-log'>Se connecter</button>
+        
+        </form>
+        
+        <p onClick={toggleSignUp} className='bottom-help-txt'>Vous n'avez pas de compte ?</p>
+        
         </div>
+        
+        </div>
+    }
+    </>
     )
+
 }

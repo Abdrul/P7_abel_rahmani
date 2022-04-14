@@ -1,12 +1,15 @@
 import React, {useState, useRef} from 'react'
 import './AuthForm.css'
-import { useNavigate } from 'react-router-dom';
+import SignIn from './SignIn';
 
-export default function SignUp() {
+export default function SignUp(props) {
 
-    const navigate = useNavigate();
 
+    const [account, setAccount] = useState(false);
+    const [formSubmit, setFormSubmit] = useState(false);
     const [error, setError] = useState('');
+
+    // recuperation input
 
     const inputs = useRef([]);
     
@@ -16,11 +19,14 @@ export default function SignUp() {
         };
     };
 
-    const toggleSignIn = () => {
+    // toggle du p pour changer d'authentification
 
-    }
+    const toggleSignIn = () => {
+        setAccount(true);
+    };
     
-    
+    // fonction a l'envoie du formulaire
+
     async function handleSubmit(e) {
         e.preventDefault();
         
@@ -34,8 +40,8 @@ export default function SignUp() {
         const password = inputs.current[2].value;
         
         try {
+            if(email, firstname, password.length > 8) {
 
-            if(email, firstname, password) {
                 let response = await fetch('http://localhost:8080/api/auth/signup', {
                     method: 'POST',
                     body : JSON.stringify({
@@ -47,12 +53,23 @@ export default function SignUp() {
                         "Content-Type": "application/json",
                     },
                 });
-                navigate('/home')
-                return await response.json();
+
+                let data = await response.json();
+
+                if(data.message === "La tentative à échouée") {
+                    setError(data.data.errors[0].message);
+                } else {
+                    setFormSubmit(true);
+                }
+
+                return data
+                
+            } else if(password.length < 8) {
+                setError('Le mot de passe doit faire minimum 8 caractère');
             } else {
-                setError('Tout les champs ne sont pas remplies')
+                setError('Tout les champs doit être remplies')
             }
-        
+
         } catch(error) {
             console.log(error);
         };
@@ -60,6 +77,18 @@ export default function SignUp() {
 
 
     return (
+    <>
+
+        {formSubmit ? 
+        <> 
+        <SignIn/>
+        <h3 className='auth-success'>Vous vous êtes enregistré avec succès, connectez-vous</h3>
+        </>
+        
+        : account ? <SignIn/>
+
+        :
+
         <div className='global-modal'>
 
             <div className="container-modal">
@@ -92,5 +121,10 @@ export default function SignUp() {
             </div>
 
         </div>
+        }
+
+
+
+    </>
     )
 }

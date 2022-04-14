@@ -57,3 +57,8 @@
     text-align: center;
     color: #E94162;
 }
+
+.auth-success {
+    text-align: center;
+    color: #333;
+}

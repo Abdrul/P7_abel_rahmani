@@ -4,9 +4,9 @@ import SignIn from './SignIn';
 
 export default function SignUp(props) {
 
+    console.log(props.txt2);
 
-    const [account, setAccount] = useState(false);
-    const [formSubmit, setFormSubmit] = useState(false);
+    // const [formSubmit, setFormSubmit] = useState(false);
     const [error, setError] = useState('');
 
     // recuperation input
@@ -21,9 +21,6 @@ export default function SignUp(props) {
 
     // toggle du p pour changer d'authentification
 
-    const toggleSignIn = () => {
-        setAccount(true);
-    };
     
     // fonction a l'envoie du formulaire
 
@@ -59,7 +56,8 @@ export default function SignUp(props) {
                 if(data.message === "La tentative à échouée") {
                     setError(data.data.errors[0].message);
                 } else {
-                    setFormSubmit(true);
+                    // setFormSubmit(true);
+                    props.txt();
                 }
 
                 return data
@@ -79,15 +77,7 @@ export default function SignUp(props) {
     return (
     <>
 
-        {formSubmit ? 
-        <> 
-        <SignIn/>
-        <h3 className='auth-success'>Vous vous êtes enregistré avec succès, connectez-vous</h3>
-        </>
-        
-        : account ? <SignIn/>
-
-        :
+    
 
         <div className='global-modal'>
 
@@ -116,12 +106,12 @@ export default function SignUp(props) {
 
                 </form>
 
-                <p onClick={toggleSignIn} className='bottom-help-txt'>Vous avez déjà un compte ?</p>
+                <p onClick={props.txt} className='bottom-help-txt'>Vous avez déjà un compte ?</p>
 
             </div>
 
         </div>
-        }
+        
 
 
 

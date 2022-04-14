@@ -10,17 +10,17 @@ export default function Navbar() {
     const [signUp, setSignUp] = useState(false);
 
     const handleModalsUp = (e) => {
-        if(e.target.id === "register") {
+
             setSignUp(true);
             setSignIn(false);
-        }
+
     };
 
     const handleModalsIn = (e) => {
-        if(e.target.id === "login") {
+
             setSignIn(true);
             setSignUp(false);
-        }
+
     };
 
 
@@ -34,13 +34,13 @@ export default function Navbar() {
 
             <nav className='nav'>
 
-                <button id="login" onClick={handleModalsIn} className={signIn ? "btn-active" : "button-passive"}>Connexion</button>
-                <button id="register" onClick={handleModalsUp} className={signUp ? "btn-active" : "button-passive"}>Inscription</button>
+                <button onClick={handleModalsIn} className={signIn ? "btn-active" : "button-passive"}>Connexion</button>
+                <button onClick={handleModalsUp} className={signUp ? "btn-active" : "button-passive"}>Inscription</button>
 
             </nav>
 
-            {signIn && <SignIn/>}
-            {signUp && <SignUp/>}
+            {signIn && <SignIn txt2={handleModalsUp}/>}
+            {signUp && <SignUp txt={handleModalsIn} txt2={handleModalsUp}/>}
 
         </div>
 

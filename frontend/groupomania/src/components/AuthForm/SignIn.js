@@ -3,11 +3,10 @@ import './AuthForm.css'
 import { Navigate, useNavigate } from 'react-router-dom';
 import SignUp from './SignUp';
 
-export default function SignIn() {
+export default function SignIn(props) {
 
     const navigate = useNavigate();
 
-    const [upAcc, setUpAcc] = useState(false);
     const [error, setError] = useState('');
 
     const inputs = useRef([]);
@@ -18,9 +17,6 @@ export default function SignIn() {
         };
     }; 
 
-    const toggleSignUp = () => {
-        setUpAcc(true);
-    };
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -72,36 +68,34 @@ export default function SignIn() {
     return (
     <>
 
-        {upAcc ? <SignUp/> :
-        
+
         <div className='global-modal'>
         
-        <div className="container-modal">
-        
-        <form onSubmit={handleSubmit} className="form-auth">
-        
-        <h2>Connexion</h2>
-        
-        <p className='error-sign'>
-        {error}
-        </p>
-        
-        <label htmlFor="mail">Votre email</label>
-        <input ref={addInputs} type="email" id='mail' />
-        
-        <label htmlFor="psw">Votre mot de passe</label>
-        <input ref={addInputs} type="password" id='psw'/>
-        
-        <button className='btn-log'>Se connecter</button>
-        
-        </form>
-        
-        <p onClick={toggleSignUp} className='bottom-help-txt'>Vous n'avez pas de compte ?</p>
+            <div className="container-modal">
+            
+                <form onSubmit={handleSubmit} className="form-auth">
+                
+                    <h2>Connexion</h2>
+                    
+                    <p className='error-sign'>
+                    {error}
+                    </p>
+                    
+                    <label htmlFor="mail">Votre email</label>
+                    <input ref={addInputs} type="email" id='mail' />
+                    
+                    <label htmlFor="psw">Votre mot de passe</label>
+                    <input ref={addInputs} type="password" id='psw'/>
+                    
+                    <button className='btn-log'>Se connecter</button>
+                
+                </form>
+            
+            <p onClick={props.txt2} className='bottom-help-txt'>Vous n'avez pas de compte ?</p>
+            
+            </div>
         
         </div>
-        
-        </div>
-    }
     </>
     )
 

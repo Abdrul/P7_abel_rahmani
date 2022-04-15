@@ -1,7 +1,7 @@
 import React,{useState, useRef} from 'react'
 import './AuthForm.css'
-import { Navigate, useNavigate } from 'react-router-dom';
-import SignUp from './SignUp';
+import { useNavigate } from 'react-router-dom';
+
 
 export default function SignIn(props) {
 
@@ -41,7 +41,7 @@ export default function SignIn(props) {
                 
                 let data = await response.json();
 
-                console.log(data.token);
+                console.log(data.user);
 
                 if(data.message === "L'email est incorrect") {
                     setError(data.message)
@@ -49,8 +49,10 @@ export default function SignIn(props) {
                     setError(data.message)
                 } else {
                     const token = data.token;
+                    const user = data.user;
                     localStorage.setItem('token', token);
-                    navigate('/home')
+                    localStorage.setItem('user', user);
+                    navigate('/home');
                 }
 
                 return data
@@ -91,7 +93,7 @@ export default function SignIn(props) {
                 
                 </form>
             
-            <p onClick={props.txt2} className='bottom-help-txt'>Vous n'avez pas de compte ?</p>
+            <p onClick={props.modalUp} className='bottom-help-txt'>Vous n'avez pas de compte ?</p>
             
             </div>
         

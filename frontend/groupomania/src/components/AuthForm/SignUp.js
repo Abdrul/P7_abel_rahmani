@@ -1,12 +1,10 @@
 import React, {useState, useRef} from 'react'
 import './AuthForm.css'
-import SignIn from './SignIn';
+
 
 export default function SignUp(props) {
 
-    console.log(props.txt2);
-
-    // const [formSubmit, setFormSubmit] = useState(false);
+    const [test, setTest] = useState(false);
     const [error, setError] = useState('');
 
     // recuperation input
@@ -19,7 +17,6 @@ export default function SignUp(props) {
         };
     };
 
-    // toggle du p pour changer d'authentification
 
     
     // fonction a l'envoie du formulaire
@@ -37,7 +34,7 @@ export default function SignUp(props) {
         const password = inputs.current[2].value;
         
         try {
-            if(email, firstname, password.length > 8) {
+            if(email, firstname, password) {
 
                 let response = await fetch('http://localhost:8080/api/auth/signup', {
                     method: 'POST',
@@ -55,17 +52,16 @@ export default function SignUp(props) {
 
                 if(data.message === "La tentative à échouée") {
                     setError(data.data.errors[0].message);
+                } else if(data.error === "Le mot de passe n'est pas assez fort uppercase,digits") {
+                    setError("Le mot de passe doit contenir 8 caratères minimum, et avoir une majuscule et 2 chiffres")
                 } else {
-                    // setFormSubmit(true);
-                    props.txt();
+                    props.modalIn();
+                    setTest(true);
                 }
-
-                return data
                 
-            } else if(password.length < 8) {
-                setError('Le mot de passe doit faire minimum 8 caractère');
+
             } else {
-                setError('Tout les champs doit être remplies')
+                setError('Tout les champs doit être remplies');
             }
 
         } catch(error) {
@@ -76,8 +72,6 @@ export default function SignUp(props) {
 
     return (
     <>
-
-    
 
         <div className='global-modal'>
 
@@ -99,6 +93,7 @@ export default function SignUp(props) {
                     
                     <label htmlFor="psw">Votre mot de passe</label>
                     <input ref={addInputs} type="password" id='psw'/>
+
                     <label htmlFor="confirm-psw">Confirmez votre mot de passe</label>
                     <input ref={addInputs} type="password" id='confirm-psw'/>
 
@@ -106,15 +101,12 @@ export default function SignUp(props) {
 
                 </form>
 
-                <p onClick={props.txt} className='bottom-help-txt'>Vous avez déjà un compte ?</p>
+                <p onClick={props.modalIn} className='bottom-help-txt'>Vous avez déjà un compte ?</p>
 
             </div>
 
         </div>
         
-
-
-
     </>
     )
 }

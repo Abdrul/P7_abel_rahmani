@@ -1,9 +1,8 @@
 import './App.css';
 import Home from './pages/Home';
-import Navbar from './components/Navbar/Navbar';
+import Thread from './pages/Thread';
 import {Routes, Route} from 'react-router-dom'
-import SignIn from './components/AuthForm/SignIn';
-import SignUp from './components/AuthForm/SignUp';
+
 
 
 function App() {
@@ -12,9 +11,9 @@ function App() {
       
       <Routes>
 
-        <Route path='/' element={<Navbar/>} />
+        <Route path='/' element={<Home/>} />
 
-        <Route path='/home' element={<Home/>} />
+        <Route path='/home' element={<Thread/>} />
 
       </Routes>
 

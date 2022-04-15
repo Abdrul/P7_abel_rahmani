@@ -57,7 +57,7 @@ exports.login = (req, res) => {
             //     res.cookie('jwt', token, cookieOptions);
 
             const message = `Vous avez été connecté avec succès`;
-            return res.json({ message, data: user, token })
+            return res.json({ message, user, token })
             });
     })
     .catch(error => {

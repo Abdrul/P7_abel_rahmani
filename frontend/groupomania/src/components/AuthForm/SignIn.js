@@ -41,17 +41,17 @@ export default function SignIn(props) {
                 
                 let data = await response.json();
 
-                console.log(data.user);
+                const token = data.token;
+                const userId = data.user.id;
+                console.log(data);
 
                 if(data.message === "L'email est incorrect") {
                     setError(data.message)
                 } else if(data.message === "Le mot de passe est incorrect") {
                     setError(data.message)
                 } else {
-                    const token = data.token;
-                    const user = data.user;
-                    localStorage.setItem('token', token);
-                    localStorage.setItem('user', user);
+                    localStorage.setItem('token', JSON.stringify(token));
+                    localStorage.setItem('user', JSON.stringify(userId));
                     navigate('/home');
                 }
 

@@ -1,7 +1,17 @@
-import React from 'react'
+import React, {useContext} from 'react'
+import Navbar from '../components/Navbar/Navbar'
+import { useSelector } from 'react-redux';
+import { UuidContext } from '../components/Appcontext';
+
 
 export default function Thread() {
-  return (
-    <div>Bienvenue sur le site</div>
-  )
-}
+
+
+    return (
+      <div>
+
+        <Navbar />
+
+      </div>
+    );
+};

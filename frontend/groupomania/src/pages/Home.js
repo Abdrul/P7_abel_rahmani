@@ -6,6 +6,7 @@ import SignUp from '../components/AuthForm/SignUp';
 
 export default function Navbar() {
 
+
     const [signIn, setSignIn] = useState(true);
     const [signUp, setSignUp] = useState(false);
 

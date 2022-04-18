@@ -1,0 +1,47 @@
+.nav-home {
+    padding: 10px 10px 0;
+}
+
+.container-img {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.container-home-icon {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.container-home-icon p {
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.container-logout-profil-icon {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.container-profil-icon p {
+    display: none;
+}
+
+.container-logout-icon p {
+    display: none;
+}
+
+.icon-home {
+    width: 50px;
+}
+
+.icon-logout {
+    width: 28px;
+}
+
+.icon-profil {
+    width: 30px;
+}

@@ -1,7 +1,6 @@
 .container-navbar {
     display: flex;
     flex-direction: column;
-    background: #FFDEFA;
     height: 100vh;
 }
 

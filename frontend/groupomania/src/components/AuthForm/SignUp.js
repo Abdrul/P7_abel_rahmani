@@ -1,10 +1,8 @@
 import React, {useState, useRef} from 'react'
 import './AuthForm.css'
 
-
 export default function SignUp(props) {
 
-    const [test, setTest] = useState(false);
     const [error, setError] = useState('');
 
     // recuperation input
@@ -17,8 +15,6 @@ export default function SignUp(props) {
         };
     };
 
-
-    
     // fonction a l'envoie du formulaire
 
     async function handleSubmit(e) {
@@ -56,7 +52,6 @@ export default function SignUp(props) {
                     setError("Le mot de passe doit contenir 8 caratères minimum, et avoir une majuscule et 2 chiffres")
                 } else {
                     props.modalIn();
-                    setTest(true);
                 }
                 
 

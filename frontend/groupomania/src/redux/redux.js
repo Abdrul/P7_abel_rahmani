@@ -1,8 +1,4 @@
-import {configureStore, createSlice} from '@reduxjs/toolkit';
-import {useSelector} from 'react-redux'
-
-
-
+import {configureStore, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 
 // const todoSlice = createSlice({
 //     name: "todo",
@@ -72,39 +68,20 @@ onChange= {() => dipatch(createToggle(task.id))}
 */
 
 
-
 const userSlice = createSlice({
     name: "user",
-    initialState: {
-        firstname: "",
-        email: ""
-    },
+    initialState: {},
     reducers: {
-        getUser : (state, action) => {
-            fetch(`http://localhost:8080/api/user`, {
-                    method: 'GET',
-                    headers : {
-                        "Content-Type": "application/json",
-                    },
-                })
-            .then(response => console.log(response))
-            .catch(error => console.log(error))
-
-            const newUser = {
-                firstname : action.payload,
-                email: action.payload
-            }
-
-            // action.payload = data
-
-            // data = action.payload
-
-            state.push(newUser)
+        getOneUser: (state, action) => {
+            state = action.payload
+            return state
         }
     }
+
 });
 
-export const {getUser} = userSlice.actions;
+
+export const {getOneUser} = userSlice.actions;
 
 
 export const store = configureStore({

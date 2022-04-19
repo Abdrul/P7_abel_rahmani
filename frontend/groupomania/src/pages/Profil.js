@@ -1,41 +1,52 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import './Profil.css'
 import { useDispatch, useSelector } from 'react-redux';
-import { UuidContext } from '../components/Appcontext';
-import { getUser } from '../redux/redux';
-
-
+import { getOneUser } from '../redux/redux';
+import authHeader from '../components/AuthHeader';
 
 export default function Profil() {
 
-    const testUser = useContext(UuidContext);
-    console.log(testUser);
 
-    async function test() {
-        try {
-            let response = await fetch(`http://localhost:8080/api/user`, {
-                method: 'GET',
-                headers : testUser,
-            })
-            
-            let data = await response.json();
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.user);
+    console.log(user);
 
-            console.log(data);
 
-        } catch (err) {
-            console.log(err);
-        }
+    
+    useEffect(() => {
 
-    }
-    test()
+        async function fetchOneUser() {
+            try {
+                const id = JSON.parse(localStorage.getItem('user'));
+                let response = await fetch(`http://localhost:8080/api/user/${id}`, {
+                    method: 'GET',
+                    headers : authHeader(),
+                })
+                
+                let data = await response.json();
+    
+                dispatch(getOneUser(data.data))
+    
+                // console.log(data.data);
+                
+            } catch (err) {
+                console.log(err);
+            }
+    
+        };
+        
+        fetchOneUser();
 
-    // const user = useSelector(state => console.log(state));
-    // const dispatch = useDispatch();
+    }, []);
+
+
 
     return (
         <div>
-            {/* {uuid ? "token" : "pas token"} */}
-            <h1>Bienvenue sur votre profil : </h1>
+
+            <h1>Bienvenue sur votre profil : {user.email} </h1>
+            <h1>Bienvenue sur votre profil : {user.firstname} </h1>
+
 
         </div>
     )

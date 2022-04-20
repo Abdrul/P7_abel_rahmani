@@ -1,0 +1,88 @@
+
+
+.nav-edit-profil {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px 0;
+}
+
+.icon-home-logout-edit-profil {
+    display: flex;
+    gap: 15px;
+}
+
+.icon-logo-edit-profil img {
+    width: 50px;
+}
+
+
+.icon-logout-edit-profil img {
+    width: 25px;
+}
+
+.icon-home-edit-profil img {
+    width: 25px;
+}
+
+
+.div-edit-profil {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 50px;
+}
+
+.update-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 80%;
+    position: relative;
+}
+
+.update-img input {
+    display: none;
+}
+
+.icon-edit {
+    position: absolute;
+    right: 0;
+    bottom: 10px;
+}
+
+.information-edit-profil label, .information-edit-profil input {
+    display: block;
+    font-size: 20px;
+}
+
+
+.information-edit-profil label {
+    text-align: center;
+    padding: 10px 0;
+}
+
+.information-edit-profil input {
+    border-radius: 5px;
+    border: 1px solid rgba(0,0,0,0.2);
+}
+
+.btn-edit {
+    padding: 10px;
+    margin: 25px auto;
+    font-size: 20px;
+    border-radius: 5px; 
+    border: none;
+    cursor: pointer;
+    background-color: #333;
+    color: #f1f1f1;
+}
+
+.information-profil {
+    padding: 10px 0;
+}
+
+.information-profil p {
+    font-size: 20px;
+    padding-top: 10px;
+    font-weight: 600;
+}

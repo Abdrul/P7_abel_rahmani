@@ -52,7 +52,7 @@ exports.updateUser = async (req, res) => {
             fs.unlink(`images/${filename}`, (err) => {
                 if (err) res.status(500).json({ err });
             })
-        }
+        };
 
         const userObject = req.file ? 
         {

@@ -43,7 +43,6 @@ export default function SignIn(props) {
 
                 const token = data.token;
                 const userId = data.user.id;
-                console.log(data);
 
                 if(data.message === "L'email est incorrect") {
                     setError(data.message)

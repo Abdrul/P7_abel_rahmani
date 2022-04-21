@@ -1,7 +1,6 @@
 import React, {useEffect, useState, useRef} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import {getOneUser} from '../../redux/redux'
-import { editUser } from '../../redux/redux';
 import { Link } from 'react-router-dom';
 // import de la fonction pour recup le token d'auth 
 import authHeader from '../AuthHeader'
@@ -26,6 +25,8 @@ export default function EditProfil() {
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  // const user2 = useSelector((state) => console.log(state));
+  // console.log(user);
 
   // function get one user by id
 
@@ -73,6 +74,22 @@ export default function EditProfil() {
         console.log(err);
     };
   };
+
+  async function fetchDeleteUser() {
+    try {
+      let response = await fetch(`http://localhost:8080/api/user/${id}`, {
+          method: 'DELETE',
+          headers : {
+            "Authorization": authHeader()
+            }
+        });
+        
+        let data = await response.json();
+
+    } catch (err) {
+        console.log(err);
+    };
+  }
 
 
   // use effect pour faire appel a l'api qu'une fois
@@ -124,10 +141,14 @@ export default function EditProfil() {
     localStorage.clear();
   };
 
-  const testButton = () => {
+  const validEditButton = () => {
     setEdit(false);
     fetchEditUser();
   };
+
+  const testDelete = () => {
+    fetchDeleteUser();
+  }
 
 
   return (
@@ -180,7 +201,7 @@ export default function EditProfil() {
             <label htmlFor="firstname">Votre nom</label>
             <input onChange={handleModifyProfil} defaultValue={form.firstname} name="firstname" />
 
-            <button className='btn-valid-edit' onClick={testButton}>Valider</button>
+            <button className='btn-valid-edit' onClick={validEditButton}>Valider</button>
 
           </div>
 
@@ -195,6 +216,9 @@ export default function EditProfil() {
 
             <div>
               <button className='btn-edit' onClick={modifyButton} >Modifer votre profil</button>
+              <Link to='/'>
+              <button onClick={testDelete}>Supprimer votre compte</button>
+              </Link>
             </div>
 
       </div>

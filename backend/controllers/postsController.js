@@ -37,15 +37,21 @@ exports.getOnePost = async (req, res) => {
 exports.createPosts = async (req, res) => {
     try {
         req.body.user_id = req.params.userId;
-        const postsBody = req.body
+        // const postsBody = req.body
         // let postsBody = {
         //     text: req.body.text,
         //     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
         //     user_id: req.body.user_id
         // }
-        const postsUser = await Posts.create({
-            ...postsBody,
+        const postsObject = req.file ? 
+        {
+            text: req.body.text,
+            user_id: req.body.user_id,
             imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        } : { text: req.body.text, user_id: req.body.user_id };
+
+        const postsUser = await Posts.create({
+            ...postsObject,
         });
         const message = `Votre posts à été crée`;
         res.status(201).json({ message, data: postsUser });
@@ -75,8 +81,9 @@ exports.updatePosts = async (req, res) => {
             const postsObject = req.file ? 
             {
                 text: req.body.text,
+                user_id: req.body.user_id,
                 imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-            } : { text: req.body.text };
+            } : { text: req.body.text, user_id: req.body.user_id, };
 
             const postsUpdate = await Posts.update(postsObject, { where: { id: id }});
             const message = `Le post à bien été modifié`;

@@ -27,6 +27,9 @@ module.exports = (sequelize, DataTypes) => {
                 isAlpha: true,
             }
         },
+        imageUrl: {
+            type: DataTypes.STRING,
+        },
         // lastname: {
         //     type: DataTypes.STRING,
         //     allowNull: false

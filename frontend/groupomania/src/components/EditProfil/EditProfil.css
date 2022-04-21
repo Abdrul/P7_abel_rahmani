@@ -34,10 +34,14 @@
 }
 
 .update-img {
-    width: 150px;
-    height: 150px;
-    border-radius: 80%;
     position: relative;
+}
+
+.profil-picture {
+    width: 200px;
+    height: 200px;
+    border-radius: 80%;
+    object-fit: cover;
 }
 
 .update-img input {
@@ -50,9 +54,15 @@
     bottom: 10px;
 }
 
+.information-edit-profil {
+    padding-top: 25px;
+    /* display: flex;
+    flex-direction: column; */
+}
+
 .information-edit-profil label, .information-edit-profil input {
-    display: block;
     font-size: 20px;
+    display: block;
 }
 
 
@@ -64,6 +74,7 @@
 .information-edit-profil input {
     border-radius: 5px;
     border: 1px solid rgba(0,0,0,0.2);
+    margin-bottom: 10px;
 }
 
 .btn-edit {
@@ -78,11 +89,23 @@
 }
 
 .information-profil {
-    padding: 10px 0;
+    padding: 20px 0 10px 0;
 }
 
 .information-profil p {
     font-size: 20px;
     padding-top: 10px;
     font-weight: 600;
+}
+
+.btn-valid-edit {
+    padding: 10px;
+    margin: 25px auto;
+    font-size: 20px;
+    border-radius: 5px; 
+    border: none;
+    cursor: pointer;
+    background-color: #333;
+    color: #f1f1f1;
+    display: block;
 }

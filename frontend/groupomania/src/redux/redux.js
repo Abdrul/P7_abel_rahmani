@@ -75,13 +75,34 @@ const userSlice = createSlice({
         getOneUser: (state, action) => {
             state = action.payload
             return state
+        },
+        editUser: (state, action) => {
+            // state = state.map((user) => {
+            //     if(user.id === action.payload[1]) {
+            //         return {
+            //             ...user,
+            //             email: action.payload[0]
+            //         };
+            //     } else {
+            //         return user;
+            //     };
+            // })
+            const testredux = state.find(t => t.id === action.payload);
+            if(testredux === action.payload) {
+                return {
+                    
+                    email: action.payload
+                }
+            } else {
+                return state
+            }
         }
     }
 
 });
 
 
-export const {getOneUser} = userSlice.actions;
+export const {getOneUser, editUser} = userSlice.actions;
 
 
 export const store = configureStore({

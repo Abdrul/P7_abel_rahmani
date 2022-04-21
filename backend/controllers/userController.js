@@ -4,6 +4,7 @@
 // Delete user
 
 const { User } = require('../config/db');
+const fs = require('fs');
 
 exports.allUsers = async (req, res) => {
     try {
@@ -32,16 +33,43 @@ exports.oneUser = async (req, res) => {
 };
 
 exports.updateUser = async (req, res) => {
+    // try {
+    //     const id = req.params.id;
+    //     const user = await User.update(req.body, { where: { id: id }});
+    //     const message = `Le user à bien été modifié`;
+    //     res.json({ message, data: user });
+
+    // } catch(error) {
+    //     const message = `Le user n'as pas pu être modifié`;
+    //     res.status(500).json({ message, data: error });
+    // };
+
     try {
         const id = req.params.id;
-        const user = await User.update(req.body, { where: { id: id }});
-        const message = `Le user à bien été modifié`;
-        res.json({ message, data: user });
+        const userFs  = await User.findByPk(id);
+        if(req.file) {
+            const filename = userFs.imageUrl.split('/images')[1];
+            fs.unlink(`images/${filename}`, (err) => {
+                if (err) res.status(500).json({ err });
+            })
+        }
 
-    } catch(error) {
-        const message = `Le user n'as pas pu être modifié`;
-        res.status(500).json({ message, data: error });
-    };
+        const userObject = req.file ? 
+        {
+            email: req.body.email,
+            firstname: req.body.firstname,
+            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        } : {...req.body};
+
+
+        const userUpdate = await User.update(userObject, { where: { id: id }});
+        const message = `Le post à bien été modifié`;
+        res.json({ message, data: userUpdate });
+
+} catch(error) {
+    const message = `Le post n'as pas pu être modifié`;
+    res.status(500).json({ message, data: error });
+};
 };
 
 

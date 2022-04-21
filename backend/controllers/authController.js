@@ -13,7 +13,8 @@ exports.signup = (req, res) => {
             password: hash,
             firstname: req.body.firstname,
             lastname: req.body.lastname,
-            admin: req.body.admin
+            admin: req.body.admin,
+            // imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
         })
         .then(() => res.status(201).json({ message: "utilisateur cree" }))
         .catch(error => {

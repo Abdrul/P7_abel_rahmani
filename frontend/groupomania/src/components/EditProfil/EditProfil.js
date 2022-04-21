@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useRef} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import {getOneUser} from '../../redux/redux'
+import { editUser } from '../../redux/redux';
 import { Link } from 'react-router-dom';
 // import de la fonction pour recup le token d'auth 
 import authHeader from '../AuthHeader'
@@ -17,10 +18,8 @@ export default function EditProfil() {
 
   const [edit, setEdit] = useState(false);
   const [form, setForm] = useState('');
+  const [image, setImage] = useState(Pdp);
 
-  const clearStorage = () => {
-    localStorage.clear();
-  };
 
   // id de l'utilisateur stocke dans le localstorage
   const id = JSON.parse(localStorage.getItem('user'));
@@ -34,25 +33,56 @@ export default function EditProfil() {
       try {
           let response = await fetch(`http://localhost:8080/api/user/${id}`, {
               method: 'GET',
-              headers : authHeader(),
-          })
+              headers : {
+                "Authorization": authHeader()
+              }
+          });
           
           let data = await response.json();
 
-          dispatch(getOneUser(data.data))
+          dispatch(getOneUser(data.data));
 
-          
       } catch (err) {
           console.log(err);
-      }
-
+      };
   };
 
-  // use effect pour faire appel a l'api qu'une fois
+  //function edit profil
 
+  async function fetchEditUser() {
+    try {
+      let response = await fetch(`http://localhost:8080/api/user/${id}`, {
+          method: 'PUT',
+          headers : {
+            "Content-Type": "application/json",
+            "Authorization": authHeader()
+            },
+
+          body: JSON.stringify({
+            email: form.email,
+            firstname: form.firstname
+          })
+          
+        });
+        
+        let data = await response.json();
+        console.log(data);
+
+
+    } catch (err) {
+        console.log(err);
+    };
+  };
+
+
+  // use effect pour faire appel a l'api qu'une fois
+  
   useEffect(() => {
-      fetchOneUser();
+    fetchOneUser();
+
   }, []);
+
+  // use effect pour recuperer les donnees une fois
 
   useEffect(() => {
     if(user) {
@@ -63,16 +93,40 @@ export default function EditProfil() {
     }
   }, [user]);
 
-  const modifyButton = () => {
-    setEdit(!edit)
+  //Function display input and edit profil with api
+
+  const modifyButton = (e) => {
+    setEdit(!edit);
+    // fetchEditUser()
+    // setTestButton('Valider')
   };
 
+  // onchange input to edit profil
+
   const handleModifyProfil = (e) => {
-    // setForm((prevUser) => ({...prevUser, [e.target.name]: e.target.value}));
     setForm({
       ...form,
       [e.target.name]: e.target.value
-    })
+    });
+  };
+
+  //onchange input edit photo de profil
+
+  const editPicture = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setImage(URL.createObjectURL(e.target.files[0]));
+    };
+  };
+
+  //clearLS
+
+  const clearStorage = () => {
+    localStorage.clear();
+  };
+
+  const testButton = () => {
+    setEdit(false);
+    fetchEditUser();
   };
 
 
@@ -108,11 +162,11 @@ export default function EditProfil() {
 
           <div className='div-img-profil'>
             <div className='update-img'>
-              <img src={Pdp} alt="photo-de-profil" />
-              <label htmlFor="file">
+              <img src={image} alt="photo-de-profil" className='profil-picture'/>
+              <label htmlFor="file" >
                 <img src={IconEdit} alt="icon-edit" className='icon-edit'  />
               </label>
-                <input name="file" id="file" type="file" accept='image/png, image/jpeg, image/jpg' />
+                <input onChange={editPicture} name="file" id="file" type="file" accept='image/png, image/jpeg, image/jpg' />
             </div>
           </div>
 
@@ -126,11 +180,13 @@ export default function EditProfil() {
             <label htmlFor="firstname">Votre nom</label>
             <input onChange={handleModifyProfil} defaultValue={form.firstname} name="firstname" />
 
+            <button className='btn-valid-edit' onClick={testButton}>Valider</button>
+
           </div>
 
           ) : (
           <div className='information-profil'>
-            <div className=''>
+            <div>
               <p> Email : {form.email} </p>
               <p> Prénom : {form.firstname} </p>
             </div>
@@ -138,7 +194,7 @@ export default function EditProfil() {
             )}
 
             <div>
-              <button className='btn-edit' onClick={modifyButton} >Modifier votre profil</button>
+              <button className='btn-edit' onClick={modifyButton} >Modifer votre profil</button>
             </div>
 
       </div>

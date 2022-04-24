@@ -33,21 +33,11 @@ exports.oneUser = async (req, res) => {
 };
 
 exports.updateUser = async (req, res) => {
-    // try {
-    //     const id = req.params.id;
-    //     const user = await User.update(req.body, { where: { id: id }});
-    //     const message = `Le user à bien été modifié`;
-    //     res.json({ message, data: user });
-
-    // } catch(error) {
-    //     const message = `Le user n'as pas pu être modifié`;
-    //     res.status(500).json({ message, data: error });
-    // };
 
     try {
         const id = req.params.id;
         const userFs  = await User.findByPk(id);
-        if(req.file) {
+        if(req.file && userFs.imageUrl) {
             const filename = userFs.imageUrl.split('/images')[1];
             fs.unlink(`images/${filename}`, (err) => {
                 if (err) res.status(500).json({ err });

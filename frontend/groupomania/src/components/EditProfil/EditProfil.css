@@ -82,10 +82,11 @@
     margin: 25px auto;
     font-size: 20px;
     border-radius: 5px; 
-    border: none;
+    /* border: none; */
     cursor: pointer;
-    background-color: #333;
-    color: #f1f1f1;
+    background-color: #CAB8FF;
+    color: #000;
+    display: block;
 }
 
 .information-profil {
@@ -103,9 +104,25 @@
     margin: 25px auto;
     font-size: 20px;
     border-radius: 5px; 
-    border: none;
+    /* border: none; */
     cursor: pointer;
-    background-color: #333;
-    color: #f1f1f1;
+    background-color: #CAB8FF;
+    color: #000;
+    display: block;
+}
+
+a {
+    text-decoration: none;
+}
+
+.btn-delete-profil {
+    padding: 10px;
+    margin: 25px auto;
+    font-size: 20px;
+    border-radius: 5px; 
+    /* border: ; */
+    cursor: pointer;
+    background-color: #CAB8FF;
+    color: #000;
     display: block;
 }

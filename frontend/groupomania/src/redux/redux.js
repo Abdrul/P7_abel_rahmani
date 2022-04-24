@@ -98,7 +98,7 @@ const userSlice = createSlice({
             }
         },
         deleteUser : (state, action) => {
-            state.id = state.filter(user => user.id !== action.payload);
+            return {state : state.filter(us => us.id !== action.payload)}
         }
     }
 

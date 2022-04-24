@@ -69,8 +69,8 @@ exports.updatePosts = async (req, res) => {
 
     try {
             const id = req.params.id;
-            const postsFs  = await Posts.findByPk(id);
-            if(req.file) {
+            const postsFs = await Posts.findByPk(id);
+            if(req.file && postsFs.imageUrl) {
                 const filename = postsFs.imageUrl.split('/images')[1];
                 console.log(filename);
                 fs.unlink(`images/${filename}`, (err) => {
@@ -83,7 +83,7 @@ exports.updatePosts = async (req, res) => {
                 text: req.body.text,
                 user_id: req.body.user_id,
                 imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-            } : { text: req.body.text, user_id: req.body.user_id, };
+            } : { text: req.body.text, user_id: req.body.user_id };
 
             const postsUpdate = await Posts.update(postsObject, { where: { id: id }});
             const message = `Le post à bien été modifié`;
@@ -91,6 +91,7 @@ exports.updatePosts = async (req, res) => {
 
     } catch(error) {
         const message = `Le post n'as pas pu être modifié`;
+        console.log(error)
         res.status(500).json({ message, data: error });
     };
 };

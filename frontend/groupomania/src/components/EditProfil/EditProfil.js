@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useRef} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import {getOneUser} from '../../redux/redux'
+import {deleteUser, getOneUser} from '../../redux/redux'
 import { Link } from 'react-router-dom';
 // import de la fonction pour recup le token d'auth 
 import authHeader from '../AuthHeader'
@@ -17,7 +17,23 @@ export default function EditProfil() {
 
   const [edit, setEdit] = useState(false);
   const [form, setForm] = useState('');
-  const [image, setImage] = useState(Pdp);
+  const [defaultImage, setDefaultImage] = useState(Pdp);
+  // const [file, setFile] = useState('');
+  // const [selectedFile, setSelectedFile] = useState();
+  // const [preview, setPreview] = useState();
+
+  // useEffect(() => {
+  //   if(!selectedFile) {
+  //     setPreview(undefined);
+  //     return
+  //   }
+
+  //   const objetUrl = URL.createObjectURL(selectedFile);
+  //   setPreview(objetUrl);
+
+  //   return () => URL.revokeObjectURL(objetUrl)
+
+  // }, [selectedFile])
 
 
   // id de l'utilisateur stocke dans le localstorage
@@ -25,8 +41,8 @@ export default function EditProfil() {
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  // const user2 = useSelector((state) => console.log(state));
   // console.log(user);
+
 
   // function get one user by id
 
@@ -52,23 +68,29 @@ export default function EditProfil() {
 
   async function fetchEditUser() {
     try {
+
+      let formData = new FormData();
+      // formData.append('image', defaultImage.file);
+      // formData.append('image', file);
+      formData.append('email', form.email);
+      formData.append('firstname', form.firstname);
+
       let response = await fetch(`http://localhost:8080/api/user/${id}`, {
           method: 'PUT',
           headers : {
-            "Content-Type": "application/json",
-            "Authorization": authHeader()
+            "Authorization": authHeader(),
             },
 
-          body: JSON.stringify({
-            email: form.email,
-            firstname: form.firstname
-          })
+            body: formData
+
+          // body: JSON.stringify({
+          //   email: form.email,
+          //   firstname: form.firstname,
+          //   image: image
+          // })
           
         });
-        
         let data = await response.json();
-        console.log(data);
-
 
     } catch (err) {
         console.log(err);
@@ -83,39 +105,43 @@ export default function EditProfil() {
             "Authorization": authHeader()
             }
         });
-        
         let data = await response.json();
+        // dispatch(deleteUser(id));
 
     } catch (err) {
         console.log(err);
     };
-  }
+  };
+
+
+  // useEffect(() => {
+  //   console.log('img');
+  // }, [file])
 
 
   // use effect pour faire appel a l'api qu'une fois
   
   useEffect(() => {
     fetchOneUser();
-
   }, []);
 
-  // use effect pour recuperer les donnees une fois
+  // use effect pour surveiller les donnees 
 
   useEffect(() => {
     if(user) {
       setForm({
         email: user.email,
-        firstname: user.firstname
+        firstname: user.firstname,
+        imageUrl: user.imageUrl
       })
     }
   }, [user]);
 
+
   //Function display input and edit profil with api
 
-  const modifyButton = (e) => {
+  const modifyButton = () => {
     setEdit(!edit);
-    // fetchEditUser()
-    // setTestButton('Valider')
   };
 
   // onchange input to edit profil
@@ -130,9 +156,26 @@ export default function EditProfil() {
   //onchange input edit photo de profil
 
   const editPicture = (e) => {
+    // setDefaultImage(false)
     if (e.target.files && e.target.files[0]) {
-      setImage(URL.createObjectURL(e.target.files[0]));
+      setDefaultImage({
+        url : URL.createObjectURL(e.target.files[0]),
+        file: e.target.files[0]
+      });
     };
+
+    // console.log(e.target.files[0]);
+    // setFile(e.target.files[0]);
+
+    // if(!e.target.files || e.target.files.length === 0) {
+    //   setSelectedFile(undefined);
+    //   return
+    // }
+
+    // selectedFile(e.target.files[0]);
+
+    fetchEditUser();
+
   };
 
   //clearLS
@@ -141,14 +184,20 @@ export default function EditProfil() {
     localStorage.clear();
   };
 
-  const validEditButton = () => {
+  const validEditButton = (e) => {
+    e.preventDefault();
     setEdit(false);
     fetchEditUser();
   };
 
-  const testDelete = () => {
+  const deleteProfil = () => {
     fetchDeleteUser();
-  }
+    localStorage.clear();
+  };
+
+  // const ImageThumb = ({image}) => {
+  //   return <img src={URL.createObjectURL(image)} alt={image.name} className='profil-picture' />
+  // }
 
 
   return (
@@ -183,7 +232,10 @@ export default function EditProfil() {
 
           <div className='div-img-profil'>
             <div className='update-img'>
-              <img src={image} alt="photo-de-profil" className='profil-picture'/>
+              {/* {file && <ImageThumb image={file}/> } */}
+              {/* {selectedFile && <img src={preview} />} */}
+              {/* <img src={user.imageUrl} alt="photo-de-profil" className='profil-picture'/> */}
+              <img src={defaultImage.url} alt="photo-de-profil" className='profil-picture'/>
               <label htmlFor="file" >
                 <img src={IconEdit} alt="icon-edit" className='icon-edit'  />
               </label>
@@ -193,7 +245,7 @@ export default function EditProfil() {
 
             {edit ? (
               
-          <div className='information-edit-profil'>
+          <form onSubmit={validEditButton} className='information-edit-profil'>
 
             <label htmlFor="email">Votre email</label>
             <input onChange={handleModifyProfil} defaultValue={form.email} name="email" />
@@ -201,9 +253,9 @@ export default function EditProfil() {
             <label htmlFor="firstname">Votre nom</label>
             <input onChange={handleModifyProfil} defaultValue={form.firstname} name="firstname" />
 
-            <button className='btn-valid-edit' onClick={validEditButton}>Valider</button>
+            <button className='btn-valid-edit'>Valider</button>
 
-          </div>
+          </form>
 
           ) : (
           <div className='information-profil'>
@@ -217,7 +269,7 @@ export default function EditProfil() {
             <div>
               <button className='btn-edit' onClick={modifyButton} >Modifer votre profil</button>
               <Link to='/'>
-              <button onClick={testDelete}>Supprimer votre compte</button>
+              <button className='btn-delete-profil' onClick={deleteProfil}>Supprimer votre compte</button>
               </Link>
             </div>
 

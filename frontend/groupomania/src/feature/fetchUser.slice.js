@@ -1,4 +1,4 @@
-import {configureStore, createSlice, createAsyncThunk} from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 
 // const todoSlice = createSlice({
 //     name: "todo",
@@ -68,48 +68,23 @@ onChange= {() => dipatch(createToggle(task.id))}
 */
 
 
-const userSlice = createSlice({
+const fetchUserSlice = createSlice({
     name: "user",
-    initialState: {},
+    initialState: {
+        dataUsers: []
+    },
     reducers: {
         getOneUser: (state, action) => {
-            state = action.payload
-            return state
+            state.dataUsers = action.payload
         },
-        editUser: (state, action) => {
-            // state = state.map((user) => {
-            //     if(user.id === action.payload[1]) {
-            //         return {
-            //             ...user,
-            //             email: action.payload[0]
-            //         };
-            //     } else {
-            //         return user;
-            //     };
-            // })
-            const testredux = state.find(t => t.id === action.payload);
-            if(testredux === action.payload) {
-                return {
-                    
-                    email: action.payload
-                }
-            } else {
-                return state
-            }
-        },
-        deleteUser : (state, action) => {
-            return {state : state.filter(us => us.id !== action.payload)}
+        deleteUser: (state, action) => {
+            return state = state.filter((user) => user.id !== action.payload);
         }
     }
 
 });
 
 
-export const {getOneUser, editUser, deleteUser} = userSlice.actions;
+export const {getOneUser, deleteUser} = fetchUserSlice.actions;
 
-
-export const store = configureStore({
-    reducer: {
-        user: userSlice.reducer
-    }
-});
+export default fetchUserSlice.reducer;

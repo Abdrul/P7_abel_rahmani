@@ -139,7 +139,7 @@ export default function EditProfil() {
 
   };
 
-  const testValid = () => {
+  const validEditImg = () => {
     fetchEditUser();
     setSendFile(false);
   }
@@ -199,7 +199,7 @@ export default function EditProfil() {
             <div className='div-img-profil'>
               <div className='update-img'>
                 <img src={form.imageUrl ? form.imageUrl : Pdp} alt="photo-de-profil" className='profil-picture'/>
-                {sendFile && <img onClick={testValid} src={IconCheck} alt="icon-check" className='icon-check' />}
+                {sendFile && <img onClick={validEditImg} src={IconCheck} alt="icon-check" className='icon-check' />}
                 <label htmlFor="file" >
                   <img src={IconEdit} alt="icon-edit" className='icon-edit'  />
                 </label>

@@ -9,6 +9,7 @@ import IconLogout from '../../assets/iconLogout.svg'
 import IconHome from '../../assets/iconHome.svg'
 import Pdp from '../../assets/pdp.svg'
 import IconEdit from '../../assets/iconEdit.svg'
+import IconCheck from '../../assets/iconCheck.svg'
 import './EditProfil.css'
 
 
@@ -124,7 +125,7 @@ export default function EditProfil() {
 
   const editPicture = (e) => {
 
-    setSendFile(!sendFile)
+    setSendFile(!sendFile);
 
     const files = e.target.files[0];
 
@@ -140,7 +141,7 @@ export default function EditProfil() {
 
   const testValid = () => {
     fetchEditUser();
-    setSendFile(false)
+    setSendFile(false);
   }
 
   //clearLS from icon logout
@@ -198,7 +199,7 @@ export default function EditProfil() {
             <div className='div-img-profil'>
               <div className='update-img'>
                 <img src={form.imageUrl ? form.imageUrl : Pdp} alt="photo-de-profil" className='profil-picture'/>
-                {sendFile &&  <button onClick={testValid}>valider</button> }
+                {sendFile && <img onClick={testValid} src={IconCheck} alt="icon-check" className='icon-check' />}
                 <label htmlFor="file" >
                   <img src={IconEdit} alt="icon-edit" className='icon-edit'  />
                 </label>

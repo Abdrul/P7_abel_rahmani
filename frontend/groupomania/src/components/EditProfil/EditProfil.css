@@ -56,8 +56,7 @@
 
 .information-edit-profil {
     padding-top: 25px;
-    /* display: flex;
-    flex-direction: column; */
+
 }
 
 .information-edit-profil label, .information-edit-profil input {
@@ -125,4 +124,12 @@ a {
     background-color: #CAB8FF;
     color: #000;
     display: block;
+}
+
+.icon-check {
+    display: inline;
+    position: absolute;
+    right: -30px;
+    bottom: 8px;
+    width: 24px;
 }

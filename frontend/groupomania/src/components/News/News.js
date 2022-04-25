@@ -1,12 +1,51 @@
 import React, {useState, useEffect} from 'react';
 import './News.css';
-import AuthHeader from '../AuthHeader'
+import authHeader from '../AuthHeader'
 import IconAddImg from '../../assets/iconAddimg.svg'
 
 export default function News() {
 
+    const [text, setText] = useState({
+        text: ""
+    })
 
+    const [clearText, setClearText] = useState({
+        text: ""
+    })
 
+    const fetchPosts = async () => {
+        try {
+
+            let formData = new FormData();
+            formData.append('text', text.text);
+
+            let response = await fetch(`http://localhost:8080/api/posts`, {
+            method: 'POST',
+            headers : {
+                "Authorization": authHeader(),
+            },
+            body: formData
+        });
+        
+        let data = await response.json();
+        console.log(data);
+
+        } catch (err) {
+            console.log(err);
+        };
+    }
+
+    const testPosts = (e) => {
+        e.preventDefault();
+        setText(clearText);
+        fetchPosts()
+    }
+
+    const testChange = (e) => {
+        setText({
+            text : e.target.value
+        })
+    }
 
 
     return (
@@ -15,9 +54,9 @@ export default function News() {
                 <div className='title-post-news'>
                     <h2>Votre post</h2>
                 </div>
-                <form className='form-news'>
+                <form onSubmit={testPosts} className='form-news'>
                     <div>
-                        <textarea placeholder='Quoi de neuf ?'></textarea>
+                        <textarea value={text.text} onChange={testChange} placeholder='Quoi de neuf ?'></textarea>
                     </div>
                     <div className='form-news-action'>
                         <label htmlFor="file">

@@ -1,7 +1,7 @@
 
 .container-post {
     /* width: 80%; */
-    width: 250px;
+    width: 300px;
     /* min-height: 200px; */
     height: auto;
     margin: 25px auto;
@@ -18,6 +18,12 @@
     font-size: 20px;
 }
 
+.title-post-news p {
+    text-align: center;
+    padding-bottom: 5px;
+    color: #E94162;
+}
+
 .form-news textarea {
     width: 100%;
     height: 70px;
@@ -27,6 +33,16 @@
     outline: none;
     overflow: auto;
     border-radius: 5px;
+}
+
+/* .form-news-post-img {
+
+} */
+
+.form-news-post-img img {
+    padding-bottom: 5px;
+    border-radius: 5px;
+    object-fit: cover;
 }
 
 .form-news-action {
@@ -61,4 +77,43 @@
     cursor: pointer;
     background-color: #CAB8FF;
     color: #000;
+}
+
+.container-post-get {
+        width: 300px;
+        height: auto;
+        margin: 25px auto;
+        padding: 5px;
+        border: 1px solid #CAB8FF;
+        border-radius: 5px;
+        overflow: hidden;
+        box-shadow: 1px 2px 2px 1px rgba(130, 130, 130, 0.3);
+}
+
+.text-post p{
+    font-weight: 600;
+    padding-bottom: 5px;
+}
+
+.image-post img{
+    border-radius: 5px;
+}
+
+.like-comment-post {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.like-comment-post img{
+    padding-top: 10px;
+    width: 26px;
+}
+
+.like-comment-post img:nth-child(1) {
+    padding-left: 5px;
+}
+
+.like-comment-post img:nth-child(2) {
+    padding-right: 5px;
 }

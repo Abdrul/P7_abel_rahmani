@@ -133,3 +133,9 @@ a {
     bottom: 8px;
     width: 24px;
 }
+
+.error-firstname-edit-profil {
+    padding-top: 10px;
+    text-align: center;
+    color: #E94162;
+}

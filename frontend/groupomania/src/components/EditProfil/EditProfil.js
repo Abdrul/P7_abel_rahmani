@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useRef} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import {getOneUser, deleteUser} from '../../feature/fetchUser.slice'
+import {getOneUser} from '../../feature/fetchUser.slice'
 import { Link } from 'react-router-dom';
 // import de la fonction pour recup le token d'auth 
 import authHeader from '../AuthHeader'
@@ -15,7 +15,7 @@ import './EditProfil.css'
 
 export default function EditProfil() {
 
-
+  const [error, setError] = useState();
   const [edit, setEdit] = useState(false);
   const [form, setForm] = useState('');
   const [sendFile, setSendFile] = useState(false);
@@ -50,7 +50,7 @@ export default function EditProfil() {
     };
     }
     fetchOneUser()
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if(user) {
@@ -82,6 +82,12 @@ export default function EditProfil() {
             body: formData
         });
         let data = await response.json();
+
+        if(data.data.errors) {
+          setError('Le prénom doit contenir uniquement des caractères alphanumérique')
+        } else {
+          setError();
+        }
 
     } catch (err) {
         console.log(err);
@@ -207,13 +213,14 @@ export default function EditProfil() {
               </div>
             </div>
 
+            <p className='error-firstname-edit-profil'>{error}</p>
 
         {edit ? (
           
         <form onSubmit={validEditButton} className='information-edit-profil'>
 
           <label htmlFor="email">Votre email</label>
-          <input onChange={handleModifyProfil} defaultValue={form.email} name="email" />
+          <input onChange={handleModifyProfil} defaultValue={form.email} name="email" type="email" />
 
           <label htmlFor="firstname">Votre nom</label>
           <input onChange={handleModifyProfil} defaultValue={form.firstname} name="firstname" />

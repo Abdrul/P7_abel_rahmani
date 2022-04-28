@@ -1,18 +1,20 @@
 import React, {useState, useEffect} from 'react';
+import Post from './Post';
 import './News.css';
 import authHeader from '../AuthHeader'
 import IconAddImg from '../../assets/iconAddimg.svg'
-import IconComment from '../../assets/iconComment.svg'
-import IconLike from '../../assets/iconLike.svg'
-import { getPosts } from '../../feature/fetchPosts.slice';
+import { getPosts, addPosts, deletePosts } from '../../feature/fetchPosts.slice';
 import { useSelector, useDispatch } from 'react-redux';
 
 export default function News() {
 
+    const id = JSON.parse(localStorage.getItem('user'));
+
     const dispatch = useDispatch();
     const allPost = useSelector(state => state.post.dataPosts);
-    const [error, setError] = useState();
 
+    const [error, setError] = useState();
+    
     const [post, setPost] = useState({
         text: "",
         imageUrl: "",
@@ -41,6 +43,7 @@ export default function News() {
         });
         
         let data = await response.json();
+        dispatch(addPosts(data.data));
 
         } catch (err) {
             console.log(err);
@@ -90,13 +93,30 @@ export default function News() {
             } catch (err) {
                 console.log(err);
             };
-            }
+        }
     
             fetchAllPosts();
     }, [dispatch]);
 
-        
-    
+
+    // const deletePost = async (elementId) => {
+    //     try {
+    //         let response = await fetch(`http://localhost:8080/api/posts/${elementId}`, {
+    //             method: 'DELETE',
+    //             headers: {
+    //                 "Authorization": authHeader()
+    //             }
+    //         })
+
+    //         let data = await response.json()
+            
+    //         dispatch(deletePost());
+
+    //     } catch(error) {
+    //         console.log(error);
+    //     }
+
+    // }
 
 
     return (
@@ -126,21 +146,14 @@ export default function News() {
             </div>
 
             {allPost.map((post) => {
+
                 return (
-                    <div className='container-post-get' key={post.id}>
-                        <div className='text-post'>
-                            <p>{post.text}</p>
-                        </div>
-                        {post.imageUrl && 
-                        <div className='image-post'>
-                            <img src={post.imageUrl} alt='img-about-post' />
-                        </div>
-                        }
-                        <div className='like-comment-post'>
-                            <img src={IconLike} alt="" />
-                            <img src={IconComment} alt="" />
-                        </div>
-                </div>
+                    <Post 
+                    txt={post.text} 
+                    imageUrl={post.imageUrl} 
+                    id={post.id} key={post.id} 
+                    // deleteFunc={deletePost}
+                    user_id={post.user_id} />
                 )
             })}
 

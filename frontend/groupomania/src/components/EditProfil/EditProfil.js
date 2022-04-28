@@ -28,7 +28,6 @@ export default function EditProfil() {
   const user = useSelector(state => state.user.dataUsers);
 
 
-
   // function get one user by id
 
   useEffect(() => {

@@ -106,10 +106,12 @@ exports.deletePosts = async (req, res) => {
             const id = req.params.id;
             const postsDelete  = await Posts.findByPk(id);
 
-            const filename = postsDelete.imageUrl.split('/images')[1];
-            fs.unlink(`images/${filename}`, (err) => {
-                if (err) res.status(500).json({ err });
-            });
+            if(req.file && postsDelete.imageUrl) {
+                const filename = postsDelete.imageUrl.split('/images')[1];
+                fs.unlink(`images/${filename}`, (err) => {
+                    if (err) res.status(500).json({ err });
+                });
+            }
             
             Posts.destroy({ where: { id: postsDelete.id }})
             const message = `Le posts avec l'identifiant n°${postsDelete.id} à bien été supprimé`;

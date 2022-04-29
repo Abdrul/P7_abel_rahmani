@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useRef} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import {getOneUser} from '../../feature/fetchUser.slice'
+import {getOneUser, editUser} from '../../feature/fetchUser.slice'
 import { Link } from 'react-router-dom';
 // import de la fonction pour recup le token d'auth 
 import authHeader from '../AuthHeader'
@@ -25,7 +25,8 @@ export default function EditProfil() {
   const id = JSON.parse(localStorage.getItem('user'));
 
   const dispatch = useDispatch();
-  const user = useSelector(state => state.user.dataUsers);
+  const user = useSelector(state => state.user.dataUser);
+
 
 
   // function get one user by id
@@ -67,6 +68,11 @@ export default function EditProfil() {
   async function fetchEditUser() {
     try {
 
+      // const data1 = {
+      //   email: form.email,
+      //   firstname: form.firstname
+      // }
+
       let formData = new FormData();
       formData.append('image', form.image);
       formData.append('email', form.email);
@@ -81,6 +87,8 @@ export default function EditProfil() {
             body: formData
         });
         let data = await response.json();
+
+        // dispatch(editUser(data1))
 
         if(data.data.errors) {
           setError('Le prénom doit contenir uniquement des caractères alphanumérique')
@@ -110,10 +118,9 @@ export default function EditProfil() {
   };
 
 
-
   //Function display input and edit profil with api
 
-  const modifyButton = () => {
+  const buttonModifyProfil = () => {
     setEdit(!edit);
   };
 
@@ -128,7 +135,7 @@ export default function EditProfil() {
 
   //onchange input edit photo de profil
 
-  const editPicture = (e) => {
+  const handleOnchangeImg = (e) => {
 
     setSendFile(!sendFile);
 
@@ -138,16 +145,14 @@ export default function EditProfil() {
       ...form,
       imageUrl: URL.createObjectURL(e.target.files[0]),
       image: files
-    })
-
-    // fetchEditUser();
+    });
 
   };
 
-  const validEditImg = () => {
+  const handleValidImg = () => {
     fetchEditUser();
     setSendFile(false);
-  }
+  };
 
   //clearLS from icon logout
 
@@ -157,7 +162,7 @@ export default function EditProfil() {
 
   // function submit
 
-  const validEditButton = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setEdit(false);
     fetchEditUser();
@@ -165,7 +170,7 @@ export default function EditProfil() {
   
   // function deletebutton
 
-  const deleteProfil = () => {
+  const buttonDeleteProfil = () => {
     fetchDeleteUser();
     localStorage.clear();
   };
@@ -204,11 +209,11 @@ export default function EditProfil() {
             <div className='div-img-profil'>
               <div className='update-img'>
                 <img src={form.imageUrl ? form.imageUrl : Pdp} alt="photo-de-profil" className='profil-picture'/>
-                {sendFile && <img onClick={validEditImg} src={IconCheck} alt="icon-check" className='icon-check' />}
+                {sendFile && <img onClick={handleValidImg} src={IconCheck} alt="icon-check" className='icon-check' />}
                 <label htmlFor="file" >
                   <img src={IconEdit} alt="icon-edit" className='icon-edit'  />
                 </label>
-                  <input onChange={editPicture} name="file" id="file" type="file" accept='image/png, image/jpeg, image/jpg' />
+                  <input onChange={handleOnchangeImg} name="file" id="file" type="file" accept='image/png, image/jpeg, image/jpg' />
               </div>
             </div>
 
@@ -216,7 +221,7 @@ export default function EditProfil() {
 
         {edit ? (
           
-        <form onSubmit={validEditButton} className='information-edit-profil'>
+        <form onSubmit={handleSubmit} className='information-edit-profil'>
 
           <label htmlFor="email">Votre email</label>
           <input onChange={handleModifyProfil} defaultValue={form.email} name="email" type="email" />
@@ -238,9 +243,9 @@ export default function EditProfil() {
         )}
 
           <div>
-            <button className='btn-edit' onClick={modifyButton} >Modifer votre profil</button>
+            <button className='btn-edit' onClick={buttonModifyProfil} >Modifer votre profil</button>
             <Link to='/'>
-            <button className='btn-delete-profil' onClick={deleteProfil}>Supprimer votre compte</button>
+            <button className='btn-delete-profil' onClick={buttonDeleteProfil}>Supprimer votre compte</button>
             </Link>
           </div>
 

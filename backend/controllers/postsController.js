@@ -7,7 +7,7 @@ const fs = require('fs');
 
 exports.getAllPosts = async (req, res) => {
     try {
-        const postsUser = await Posts.findAll();
+        const postsUser = await Posts.findAll({order: [['id', 'DESC']]});
         const message = `Tous les posts on été récupérée`;
         res.json({ message, data: postsUser });
     } catch(error) {

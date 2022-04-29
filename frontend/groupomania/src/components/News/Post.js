@@ -7,7 +7,7 @@ import IconAddImg from '../../assets/iconAddimg.svg'
 
 import authHeader from '../AuthHeader'
 import { useDispatch } from 'react-redux'
-import { deletePosts } from '../../feature/fetchPosts.slice'
+import { deletePosts, editPosts } from '../../feature/fetchPosts.slice'
 
 
 
@@ -17,17 +17,18 @@ export default function Post(props) {
     const dispatch = useDispatch();
 
     const [edit, setEdit] = useState(false);
+    const [error, setError] = useState();
     const [form, setForm] = useState({
-        text: props.txt,
+        text: props.text,
         imageUrl: props.imageUrl,
         image: ''
     });
 
-    console.log(form);
+    // console.log(form);
 
 
 
-    const deletePost = async () => {
+    const handleDeleteFetch = async () => {
         try {
             let response = await fetch(`http://localhost:8080/api/posts/${props.id}`, {
                 method: 'DELETE',
@@ -38,7 +39,7 @@ export default function Post(props) {
 
             let data = await response.json()
             
-            // dispatch(deletePost(data.data.id));
+            dispatch(deletePosts(props.id));
 
         } catch(error) {
             console.log(error);
@@ -47,6 +48,12 @@ export default function Post(props) {
 
     const editPostFetch = async () => {
         try {
+
+            const data = {
+                id: props.id,
+                text: form.text,
+                imageUrl: form.imageUrl
+            }
 
             let formData = new FormData();
             formData.append('text', form.text);
@@ -60,30 +67,40 @@ export default function Post(props) {
                 body: formData
             })
 
+            dispatch(editPosts(data));
+
         } catch(error) {
             console.log(error);
         }
     }
 
 
-    const editPost = () => {
+    const handleEdit = () => {
         setEdit(!edit)
-    }
+    };
 
     const handleSubmit = (e) => {
-        setEdit(false);
         e.preventDefault();
-        editPostFetch();
+        if(form.text !== '' || form.imageUrl !== '') {
+            setEdit(false);
+            editPostFetch();
+            setError();
+        } else {
+            setError('Vous ne pouvez pas envoyer de post vide');
+        }
+    };
 
-    }
-
-    const testOnchange = (e) => {
-
-        const files = e.target.files[0];
-
+    const handleOnchangeText = (e) => {
         setForm({
             ...form,
-            [e.target.name]: e.target.value,
+            text: e.target.value,
+        });
+    };
+
+    const handleOnchangeImg = (e) => {
+        const files = e.target.files[0];
+        setForm({
+            ...form,
             imageUrl: URL.createObjectURL(e.target.files[0]),
             image: files
         });
@@ -95,37 +112,38 @@ export default function Post(props) {
 
         {edit ?
         <div className='container-post'>
-        <div className='title-post-news'>
-            <h2>Votre post</h2>
-            <p> </p>
-        </div>
-        <form onSubmit={handleSubmit} className='form-news'>
-            <div>
-                <textarea name='text' onChange={testOnchange} defaultValue={form.text}></textarea>
+            <div className='title-post-news'>
+                <h2>Votre post</h2>
+                <p> {error} </p>
             </div>
-            <div className='form-news-post-img'>
-                <img src={form.imageUrl} />
-            </div>
-            <div className='form-news-action'>
-                <label htmlFor="file">
-                    <img src={IconAddImg} alt="icon-add-img" />
-                </label>
-                    <input type="file" name="file" id="file" className='input-file-news' />
+            <form onSubmit={handleSubmit} className='form-news'>
                 <div>
-                    <button className='btn-publish'>Publier</button>
+                    <textarea onChange={handleOnchangeText} defaultValue={form.text}></textarea>
                 </div>
-            </div>
-        </form>
+                <div className='form-news-post-img'>
+                    <img src={form.imageUrl} />
+                </div>
+                <div className='form-news-action'>
+                    <label htmlFor="edit-img">
+                        <img src={IconAddImg} alt="icon-add-img" />
+                    </label>
+                        <input onChange={handleOnchangeImg} type="file" name="file" id='edit-img' className='input-file-news' />
+                    <div>
+                        <button className='btn-publish'>Publier</button>
+                    </div>
+                </div>
+            </form>
         </div>
         
         : 
+
             <div className='container-post-get'>
                 <div className='text-post'>
                     <p>{form.text}</p>
                     {props.user_id === id &&
                     <div className='edit-delete-post'>
-                        <img onClick={editPost} src={IconEdit} alt="icon-edit" />
-                        <img onClick={deletePost} src={IconDelete} alt="icon-edit" />
+                        <img onClick={handleEdit} src={IconEdit} alt="icon-edit" />
+                        <img onClick={handleDeleteFetch} src={IconDelete} alt="icon-edit" />
                     </div>
                     }
                 </div>

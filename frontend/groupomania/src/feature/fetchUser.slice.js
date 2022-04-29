@@ -71,20 +71,28 @@ onChange= {() => dipatch(createToggle(task.id))}
 const fetchUserSlice = createSlice({
     name: "user",
     initialState: {
-        dataUsers: []
+        dataUser: []
     },
     reducers: {
         getOneUser: (state, action) => {
-            state.dataUsers = action.payload
+            state.dataUser = action.payload
         },
-        deleteUser: (state, action) => {
-            return state = state.filter((user) => user.id !== action.payload);
-        }
-    }
+        // deleteUser: (state, action) => {
+        //     state.dataUser = state.filter((user) => user.id !== action.payload);
+        // },
+        // editUser: (state, {payload}) => {
+        //     state.dataUser.map((user) => {
+        //         if(user.id === payload.id) {
+        //             user.email = payload.email
+        //             user.firstname = payload.firstname
+        //         }
+        //     })
 
+        // }
+    }
 });
 
 
-export const {getOneUser, deleteUser} = fetchUserSlice.actions;
+export const {getOneUser, deleteUser , editUser} = fetchUserSlice.actions;
 
 export default fetchUserSlice.reducer;

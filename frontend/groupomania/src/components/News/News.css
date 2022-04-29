@@ -18,11 +18,26 @@
     font-size: 20px;
 }
 
-.title-post-news p {
+.error-post {
     text-align: center;
     padding-bottom: 5px;
     color: #E94162;
+} 
+
+
+.test {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
+
+.test img {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+}
+
+
 
 .form-news textarea {
     width: 100%;

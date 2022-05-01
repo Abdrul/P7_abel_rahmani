@@ -6,7 +6,7 @@ const auth = require('../middleware/auth');
 const postOwner = require('../middleware/postOwner');
 const multer = require('../middleware/multer')
 
-router.get('/', auth, postsCtrl.getAllPosts);
+router.get('/', postsCtrl.getAllPosts);
 router.get('/:id', auth, postsCtrl.getOnePost);
 router.post('/', auth, multer, postsCtrl.createPosts);
 router.put('/:id', auth, postOwner, multer, postsCtrl.updatePosts);

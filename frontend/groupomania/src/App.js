@@ -3,7 +3,6 @@ import Home from './pages/Home';
 import Thread from './pages/Thread';
 import Profil from './pages/Profil';
 import {Routes, Route} from 'react-router-dom'
-import {useEffect} from 'react';
 
 
 

@@ -43,6 +43,12 @@ export default function EditProfil() {
         
         let data = await response.json();
 
+        // const imageUser = data.data.imageUrl;
+        // const firstname = data.data.firstname;
+
+        // localStorage.setItem('imageUser', JSON.stringify(imageUser));
+        // localStorage.setItem('firstname', JSON.stringify(firstname));
+
         dispatch(getOneUser(data.data));
 
     } catch (err) {

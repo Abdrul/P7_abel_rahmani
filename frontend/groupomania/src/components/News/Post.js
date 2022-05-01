@@ -6,7 +6,7 @@ import IconEdit from '../../assets/iconEdit.svg'
 import IconAddImg from '../../assets/iconAddimg.svg'
 
 import authHeader from '../AuthHeader'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { deletePosts, editPosts } from '../../feature/fetchPosts.slice'
 
 
@@ -15,6 +15,18 @@ export default function Post(props) {
 
     const id = JSON.parse(localStorage.getItem('user'));
     const dispatch = useDispatch();
+    // const allPost = useSelector(state => state.post.dataPosts);
+    // console.log(allPost);
+
+    // const [a, ab] = useState(allPost.map((a, b) => {
+    //     return ({
+    //         text: a.text
+    //     })
+    // }))
+
+    // console.log(a[0].text);
+
+    // console.log(a);
 
     const [edit, setEdit] = useState(false);
     const [error, setError] = useState();
@@ -81,12 +93,12 @@ export default function Post(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(form.text !== '' || form.imageUrl !== '') {
+        if(form.text === '') {
+            setError('Vous ne pouvez pas envoyer de post vide');
+        } else {
             setEdit(false);
             editPostFetch();
             setError();
-        } else {
-            setError('Vous ne pouvez pas envoyer de post vide');
         }
     };
 
@@ -112,9 +124,15 @@ export default function Post(props) {
 
         {edit ?
         <div className='container-post'>
-            <div className='title-post-news'>
-                <h2>Votre post</h2>
-                <p> {error} </p>
+            <div className='container-header-news'>
+                {/* <div className='test'>
+                    <img src={imageUser} alt="" />
+                    <p>{firstname} </p>
+                </div> */}
+                <div className='title-post-news'>
+                    <h2>Votre post</h2>
+                    <p className='error-post'> {error} </p>
+                </div>
             </div>
             <form onSubmit={handleSubmit} className='form-news'>
                 <div>
@@ -138,6 +156,12 @@ export default function Post(props) {
         : 
 
             <div className='container-post-get'>
+                {/* <div className='container-header-news'>
+                    <div className='test'>
+                        <img src={imageUser} alt="" />
+                        <p>{firstname} </p>
+                    </div>
+                </div> */}
                 <div className='text-post'>
                     <p>{form.text}</p>
                     {props.user_id === id &&

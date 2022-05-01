@@ -10,11 +10,12 @@ import { getOneUser } from '../../feature/fetchUser.slice';
 export default function News() {
 
     const id = JSON.parse(localStorage.getItem('user'));
+    // const imageUser = JSON.parse(localStorage.getItem('imageUser'));
+    // const firstname = JSON.parse(localStorage.getItem('firstname'));
 
     const dispatch = useDispatch();
     const allPost = useSelector(state => state.post.dataPosts);
     const testRedux = useSelector(state => state.user.dataUser.imageUrl)
-    const testRedux2 = useSelector(state => state.user.dataUser.firstname)
 
     const [error, setError] = useState();
     const [post, setPost] = useState({
@@ -105,10 +106,10 @@ export default function News() {
     return (
         <>
             <div className='container-post'>
-                <div className='contanier-header-news'>
+                <div className='container-header-news'>
                     <div className='test'>
-                        <img src={testRedux} alt="" />
-                        <p>{testRedux2} </p>
+                        {/* <img src={imageUser} alt="" />
+                        <p>{firstname} </p> */}
                     </div>
                     <div className='title-post-news'>
                         <h2>Votre post</h2>
@@ -141,7 +142,6 @@ export default function News() {
                     text={post.text} 
                     imageUrl={post.imageUrl} 
                     id={post.id} key={post.id} 
-                    // deleteFunc={deletePost}
                     user_id={post.user_id} />
                 )
             })}

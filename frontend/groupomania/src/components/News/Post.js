@@ -4,6 +4,7 @@ import IconLike from '../../assets/iconLike.svg'
 import IconDelete from '../../assets/iconDelete.svg'
 import IconEdit from '../../assets/iconEdit.svg'
 import IconAddImg from '../../assets/iconAddimg.svg'
+import Comments from './Comments'
 
 import authHeader from '../AuthHeader'
 import { useDispatch, useSelector } from 'react-redux'
@@ -29,6 +30,7 @@ export default function Post(props) {
     // console.log(a);
 
     const [edit, setEdit] = useState(false);
+    const [comment, setComment] = useState(false);
     const [error, setError] = useState();
     const [form, setForm] = useState({
         text: props.text,
@@ -118,6 +120,10 @@ export default function Post(props) {
         });
     };
 
+    const testModal = () => {
+        setComment(!comment);
+    }
+
 
     return (
         <>
@@ -178,11 +184,15 @@ export default function Post(props) {
                 }
                 <div className='like-comment-post'>
                     <img src={IconLike} alt="icon-like" />
-                    <img src={IconComment} alt="icon-comment" />
+                    <img src={IconComment} onClick={testModal} alt="icon-comment" />
                 </div>
+                {comment && <Comments/>}
             </div>
 
             }
+
+            {/* {comment && <Comments/>} */}
+            
 
         </>
     )

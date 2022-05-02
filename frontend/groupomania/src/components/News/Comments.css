@@ -1,0 +1,33 @@
+.container-form-content {
+    border-top: 1px solid #CAB8FF;
+    padding-top: 25px;
+    margin-top: 20px;
+}
+
+
+.form-comments textarea{
+    width: 100%;
+    height: 30px;
+    padding: 5px;
+    resize: none;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+}
+
+.btn-send-comments {
+    padding: 5px;
+    border-radius: 5px; 
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    background-color: #CAB8FF;
+    color: #000;
+    width: 25px;
+}
+
+.container-add-send-comments {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

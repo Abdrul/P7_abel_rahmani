@@ -5,7 +5,7 @@ module.exports = async (req, res, next) => {
     const commentsUserCheck  = await Comments.findByPk(id);
     
     if(!commentsUserCheck) {
-        const message = `No such posts`;
+        const message = `Vous, n'êtes pas autorisée`;
         return res.status(404).json({ message });
     };
 

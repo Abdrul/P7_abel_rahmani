@@ -33,18 +33,37 @@ exports.getOneComment = async (req, res) => {
 
 
 exports.createComments = async (req, res) => {
-    try {
-        req.body.user_id = req.params.userId; 
-        // req.body.post_id = req.params.id;
+    // try {
+    //     req.body.user_id = req.params.userId; 
+    //     // req.body.post_id = req.params.id;
 
-        const commentsBody = req.body
+    //     const commentsBody = req.body
+    //     const commentsUser = await Comments.create({
+    //         ...commentsBody,
+    //     });
+    //     const message = `Votre commentaire à été crée`;
+    //     res.status(201).json({ message, data: commentsUser });
+    // } catch(error) {
+    //     const message = `Votre commentaire n'as pas pu être ajouté`;
+    //     res.status(500).json({ message, data:error});
+    // };
+
+    try {
+        req.body.user_id = req.params.userId;
+        const commentsObject = req.file ? 
+        {
+            text: req.body.text,
+            user_id: req.body.user_id,
+            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        } : { text: req.body.text, user_id: req.body.user_id };
+
         const commentsUser = await Comments.create({
-            ...commentsBody,
+            ...commentsObject,
         });
-        const message = `Votre commentaire à été crée`;
+        const message = `Votre posts à été crée`;
         res.status(201).json({ message, data: commentsUser });
     } catch(error) {
-        const message = `Votre commentaire n'as pas pu être ajouté`;
+        const message = `Votre posts n'as pas pu être ajouté`;
         res.status(500).json({ message, data:error});
     };
 };
@@ -54,14 +73,41 @@ exports.createComments = async (req, res) => {
 
 
 exports.updateComments = async (req, res) => {
+    // try {
+    //     const id = req.params.id;
+    //     const commentsUser = await Comments.update(req.body, { where: { id: id }});
+    //     const message = `Le commentaire à bien été modifié`;
+    //     res.json({ message, data: commentsUser });
+
+    // } catch(error) {
+    //     const message = `Le commentaire n'as pas pu être modifié`;
+    //     res.status(500).json({ message, data: error });
+    // };
     try {
         const id = req.params.id;
-        const commentsUser = await Comments.update(req.body, { where: { id: id }});
-        const message = `Le commentaire à bien été modifié`;
-        res.json({ message, data: commentsUser });
+        const commentsFs = await Comments.findByPk(id);
+        if(req.file && commentsFs.imageUrl) {
+            const filename = commentsFs.imageUrl.split('/images')[1];
+            console.log(filename);
+            fs.unlink(`images/${filename}`, (err) => {
+                if (err) res.status(500).json({ err });
+            })
+        }
+
+        const commentsObject = req.file ? 
+        {
+            text: req.body.text,
+            user_id: req.body.user_id,
+            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        } : { text: req.body.text, user_id: req.body.user_id };
+
+        const commentsUpdate = await Posts.update(commentsObject, { where: { id: id }});
+        const message = `Le post à bien été modifié`;
+        res.json({ message, data: commentsUpdate });
 
     } catch(error) {
-        const message = `Le commentaire n'as pas pu être modifié`;
+        const message = `Le post n'as pas pu être modifié`;
+        console.log(error)
         res.status(500).json({ message, data: error });
     };
 };
@@ -72,15 +118,35 @@ exports.updateComments = async (req, res) => {
 
 
 exports.deleteComments = async (req, res) => {
+    // try {
+    //     const id = req.params.id;
+    //     const commentDelete  = await Posts.findByPk(id);
+    //     Comments.destroy({where: { id: commentDelete.id }})
+    //     const message = `Le commentaire avec l'identifiant n°${commentDelete.id} à bien été supprimé`;
+    //     res.json({ message, data: Comments});
+
+    // } catch (error) {
+    //     const message = `Le posts n'as pas pu être supprimé`;
+    //     res.status(500).json({ message, data: error });
+    // }
     try {
         const id = req.params.id;
-        const commentDelete  = await Posts.findByPk(id);
-        Comments.destroy({where: { id: commentDelete.id }})
-        const message = `Le commentaire avec l'identifiant n°${commentDelete.id} à bien été supprimé`;
-        res.json({ message, data: Comments});
+        const commentsDelete  = await Comments.findByPk(id);
+
+        if(req.file && commentsDelete.imageUrl) {
+
+            const filename = commentsDelete.imageUrl.split('/images')[1];
+            fs.unlink(`images/${filename}`, (err) => {
+                if (err) res.status(500).json({ err });
+            });
+            
+        }
+        Comments.destroy({ where: { id: commentsDelete.id }})
+        const message = `Le posts avec l'identifiant n°${commentsDelete.id} à bien été supprimé`;
+        res.json({ message, data: commentsDelete});
 
     } catch (error) {
         const message = `Le posts n'as pas pu être supprimé`;
         res.status(500).json({ message, data: error });
-    }
+    };
 }; 

@@ -5,7 +5,7 @@ module.exports = async (req, res, next) => {
     const postsUsersCheck  = await Posts.findByPk(id);
     
     if(!postsUsersCheck) {
-        const message = `No such posts`;
+        const message = `Vous, n'êtes pas autorisée`;
         return res.status(404).json({ message });
     };
 

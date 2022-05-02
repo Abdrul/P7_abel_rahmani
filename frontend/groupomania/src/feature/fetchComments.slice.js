@@ -10,7 +10,7 @@ const fetchCommentsSlice = createSlice({
             state.dataComments = action.payload
         },
         addComments: (state, action) => {
-            state.dataComments.unshift(action.payload)
+            state.dataComments.push(action.payload)
         },
         deleteComments: (state, action) => {
             state.dataComments = state.dataComments.filter((comments) => comments.id !== action.payload)

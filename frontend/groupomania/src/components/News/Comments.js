@@ -7,22 +7,26 @@ import { getComments, addComments } from '../../feature/fetchComments.slice'
 import authHeader from '../AuthHeader'
 
 
-export default function Comments() {
+export default function Comments(props) {
+
+    
 
     const dispatch = useDispatch();
     const allComments = useSelector(state => state.comments.dataComments);
     // console.log(allComments);
 
-
+    const [error, setError] = useState();
     const [comment, setComment] = useState({
         text: "",
         imageUrl: "",
-        image: ""
+        image: "",
+        post_id: ""
     });
     const [clearComments, setClearComments] = useState({
         text: "",
         imageUrl: "",
-        image: ""
+        image: "",
+        post_id: ""
     });
 
     useEffect(() => {
@@ -51,7 +55,8 @@ export default function Comments() {
 
             let formData = new FormData();
             formData.append('text', comment.text);
-            // formData.append('image', comment.image);
+            formData.append('post_id', comment.post_id);
+            formData.append('image', comment.image);
 
             let response = await fetch(`http://localhost:8080/api/comments`, {
             method: 'POST',
@@ -62,8 +67,8 @@ export default function Comments() {
         });
         
         let data = await response.json();
-        console.log(data);
         dispatch(addComments(data.data));
+        // setComment(clearComments);
 
         } catch (err) {
             console.log(err);
@@ -72,33 +77,69 @@ export default function Comments() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        fetchComments();
-        setClearComments(clearComments);
-    }
+        if(comment.text !== '' || comment.imageUrl !== '') {
+            fetchComments();
+            setComment(clearComments);
+            setError();
+        } else {
+            setError('Vous ne pouvez pas envoyer de commentaire vide')
+        }
+    };
 
     const handleOnchangeText = (e) => {
         setComment({
             ...comment,
-            text: e.target.value
+            text: e.target.value,
+            post_id: props.post_id
         })
+    };
+
+    const handleOnchangeImg = (e) => {
+        const files = e.target.files[0];
+        setComment({
+            ...comment,
+            imageUrl: URL.createObjectURL(e.target.files[0]),
+            image: files
+        });
     }
 
     // console.log(comment);
 
     return (
-        <div className='container-comments'>
-            <div className='container-form-content'>
-                <form onSubmit={handleSubmit} className='form-comments'>
-                    <textarea onChange={handleOnchangeText}></textarea>
-                    <div className='container-add-send-comments'>
-                        <label htmlFor="comment-img">
-                            <img src={IconAddImg} alt="icon-add-img" />
-                        </label>
-                            <input type="file" name="file" id='comment-img' className='input-file-news' />
-                        <button className='btn-send-comments'> <img src={IconSend} alt="" /> </button>
-                    </div>
-                </form>
+        <>
+            
+            <div className='container-comments'>
+                <div className='container-form-content'>
+                    <p className='error-comments'>{error}</p>
+                    <form onSubmit={handleSubmit} className='form-comments'>
+                        <textarea value={comment.text} onChange={handleOnchangeText}></textarea>
+                        <div className='form-comments-post-img'>
+                            <img src={comment.imageUrl} alt="" />
+                        </div>
+                        <div className='container-add-send-comments'>
+                            <label htmlFor="comment-img">
+                                <img src={IconAddImg} alt="icon-add-img" />
+                            </label>
+                                <input onChange={handleOnchangeImg} type="file" name="file" id='comment-img' className='input-file-news' />
+                            <button className='btn-send-comments'> <img src={IconSend} alt="" /> </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
+
+            {allComments.map((comment, index) => {
+
+                return (
+                    <div key={comment.id}>
+                        {props.post_id === comment.post_id &&
+                            <div className='container-comment-user'>
+                                <p> {comment.text} </p>
+                                <img src={comment.imageUrl} />
+                            </div>
+                        }
+                    </div>
+                )
+            })}
+        </>
     )
 }

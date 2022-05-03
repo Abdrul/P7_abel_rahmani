@@ -146,8 +146,6 @@ export default function News() {
                 )
             })}
 
-
         </>
-
     )
 }

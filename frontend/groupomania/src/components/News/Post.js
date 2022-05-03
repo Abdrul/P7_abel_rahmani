@@ -186,12 +186,10 @@ export default function Post(props) {
                     <img src={IconLike} alt="icon-like" />
                     <img src={IconComment} onClick={testModal} alt="icon-comment" />
                 </div>
-                {comment && <Comments/>}
+                {comment && <Comments post_id={props.id} />}
             </div>
 
             }
-
-            {/* {comment && <Comments/>} */}
             
 
         </>

@@ -54,8 +54,9 @@ exports.createComments = async (req, res) => {
         {
             text: req.body.text,
             user_id: req.body.user_id,
+            post_id: req.body.post_id,
             imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-        } : { text: req.body.text, user_id: req.body.user_id };
+        } : { text: req.body.text, user_id: req.body.user_id, post_id: req.body.post_id };
 
         const commentsUser = await Comments.create({
             ...commentsObject,
@@ -98,8 +99,9 @@ exports.updateComments = async (req, res) => {
         {
             text: req.body.text,
             user_id: req.body.user_id,
+            post_id: req.body.post_id,
             imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-        } : { text: req.body.text, user_id: req.body.user_id };
+        } : { text: req.body.text, user_id: req.body.user_id, post_id: req.body.post_id };
 
         const commentsUpdate = await Posts.update(commentsObject, { where: { id: id }});
         const message = `Le post à bien été modifié`;

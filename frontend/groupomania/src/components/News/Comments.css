@@ -31,3 +31,21 @@
     justify-content: space-between;
     align-items: center;
 }
+
+.container-comment-user {
+    border-top: 1px solid #CAB8FF;
+    padding-top: 10px;
+    margin-top: 15px;
+}
+
+.error-comments {
+    text-align: center;
+    padding-bottom: 5px;
+    color: #E94162;
+}
+
+.form-comments-post-img img {
+    padding-bottom: 5px;
+    border-radius: 5px;
+    object-fit: cover;
+}

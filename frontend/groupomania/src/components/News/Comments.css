@@ -33,9 +33,18 @@
 }
 
 .container-comment-user {
+    display: flex;
+    flex-direction: column;
     border-top: 1px solid #CAB8FF;
     padding-top: 10px;
     margin-top: 15px;
+}
+
+.container-comment-user img:nth-child(3) {
+    padding-top: 15px;
+    width: 22px;
+    display: flex;
+    align-self: flex-end;
 }
 
 .error-comments {
@@ -44,7 +53,7 @@
     color: #E94162;
 }
 
-.form-comments-post-img img {
+.form-comments-post-img img{
     padding-bottom: 5px;
     border-radius: 5px;
     object-fit: cover;

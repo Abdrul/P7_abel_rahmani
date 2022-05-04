@@ -2,14 +2,16 @@ import React, {useState, useEffect} from 'react'
 import './Comments.css'
 import IconSend from '../../assets/iconSend.svg'
 import IconAddImg from '../../assets/iconAddimg.svg'
+import IconDelete from '../../assets/iconDelete.svg'
+import IconEdit from '../../assets/iconEdit.svg'
 import {useDispatch, useSelector} from 'react-redux'
-import { getComments, addComments } from '../../feature/fetchComments.slice'
+import { getComments, addComments, editComments, deleteComments } from '../../feature/fetchComments.slice'
 import authHeader from '../AuthHeader'
 
 
 export default function Comments(props) {
 
-    
+    const id = JSON.parse(localStorage.getItem('user'));
 
     const dispatch = useDispatch();
     const allComments = useSelector(state => state.comments.dataComments);
@@ -75,6 +77,28 @@ export default function Comments(props) {
         };
     };
 
+    // const fetchDeleteComments = async () => {
+    //     try {
+
+    //         allComments.forEach(element => {
+                
+    //         let response =  fetch(`http://localhost:8080/api/posts/${element.id}`, {
+    //             method: 'DELETE',
+    //             headers: {
+    //                 "Authorization": authHeader()
+    //             }
+    //         })
+
+    //         let data =  response.json()
+            
+    //         dispatch(deleteComments(element.id));
+    //     });
+
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // }
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if(comment.text !== '' || comment.imageUrl !== '') {
@@ -99,11 +123,35 @@ export default function Comments(props) {
         setComment({
             ...comment,
             imageUrl: URL.createObjectURL(e.target.files[0]),
-            image: files
+            image: files,
+            post_id: props.post_id
         });
+    };
+
+    const handleDeleteComment = (lol) => {
+
+            const fetchDeleteComments = async (ol) => {
+                try {
+                        
+                    let response = await fetch(`http://localhost:8080/api/posts/${lol}`, {
+                        method: 'DELETE',
+                        headers: {
+                            "Authorization": authHeader()
+                        }
+                    })
+        
+                    let data = await response.json()
+                    console.log(lol);
+                    dispatch(deleteComments(lol));
+
+        
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+            fetchDeleteComments()
     }
 
-    // console.log(comment);
 
     return (
         <>
@@ -128,18 +176,23 @@ export default function Comments(props) {
             </div>
 
             {allComments.map((comment, index) => {
-
-                return (
+                
+                return (                            
                     <div key={comment.id}>
-                        {props.post_id === comment.post_id &&
-                            <div className='container-comment-user'>
-                                <p> {comment.text} </p>
-                                <img src={comment.imageUrl} />
-                            </div>
-                        }
+                    
+                    {props.post_id === comment.post_id &&
+                        <div className='container-comment-user'>
+                            <p> {comment.text} </p>
+                            <img src={comment.imageUrl} />
+                            {comment.user_id === id &&
+                                <img src={IconDelete} onClick={handleDeleteComment(comment.id)} />
+                            }
+                        </div>
+                    }
                     </div>
-                )
-            })}
+                    )
+                })}
+
         </>
     )
 }

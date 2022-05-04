@@ -15,7 +15,6 @@ export default function Comments(props) {
 
     const dispatch = useDispatch();
     const allComments = useSelector(state => state.comments.dataComments);
-    // console.log(allComments);
 
     const [error, setError] = useState();
     const [comment, setComment] = useState({
@@ -70,34 +69,12 @@ export default function Comments(props) {
         
         let data = await response.json();
         dispatch(addComments(data.data));
-        // setComment(clearComments);
 
         } catch (err) {
             console.log(err);
         };
     };
 
-    // const fetchDeleteComments = async () => {
-    //     try {
-
-    //         allComments.forEach(element => {
-                
-    //         let response =  fetch(`http://localhost:8080/api/posts/${element.id}`, {
-    //             method: 'DELETE',
-    //             headers: {
-    //                 "Authorization": authHeader()
-    //             }
-    //         })
-
-    //         let data =  response.json()
-            
-    //         dispatch(deleteComments(element.id));
-    //     });
-
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-    // }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -128,12 +105,12 @@ export default function Comments(props) {
         });
     };
 
-    const handleDeleteComment = (lol) => {
+    const handleDeleteComment = (commentId) => {
 
-            const fetchDeleteComments = async (ol) => {
+            const fetchDeleteComments = async () => {
                 try {
                         
-                    let response = await fetch(`http://localhost:8080/api/posts/${lol}`, {
+                    let response = await fetch(`http://localhost:8080/api/comments/${commentId}`, {
                         method: 'DELETE',
                         headers: {
                             "Authorization": authHeader()
@@ -141,8 +118,7 @@ export default function Comments(props) {
                     })
         
                     let data = await response.json()
-                    console.log(lol);
-                    dispatch(deleteComments(lol));
+                    dispatch(deleteComments(commentId));
 
         
                 } catch (err) {
@@ -185,7 +161,9 @@ export default function Comments(props) {
                             <p> {comment.text} </p>
                             <img src={comment.imageUrl} />
                             {comment.user_id === id &&
-                                <img src={IconDelete} onClick={handleDeleteComment(comment.id)} />
+                            <button onClick={() => handleDeleteComment(comment.id)} className='btn-delete-comment'>
+                                <img src={IconDelete} />
+                            </button>
                             }
                         </div>
                     }

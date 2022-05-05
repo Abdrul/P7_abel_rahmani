@@ -4,7 +4,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.UUID,
             defaultValue : DataTypes.UUIDV1,
             primaryKey: true,
-            onDelete: 'CASCADE'
         },
         email: {
             type: DataTypes.STRING,
@@ -29,14 +28,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         imageUrl: {
             type: DataTypes.STRING,
-        },
-        // lastname: {
-        //     type: DataTypes.STRING,
-        //     allowNull: false
-        // },
-        // admin : {
-        //     type : DataTypes.BOOLEAN,
-        //     allowNull: false
-        // }
+        }
     });
 };

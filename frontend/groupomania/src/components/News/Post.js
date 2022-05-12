@@ -234,7 +234,7 @@ export default function Post(props) {
                     <img src={IconComment} onClick={handleModalComment} alt="icon-comment" />
                 
                 </div>
-                        {/* <p> {props.countComments} </p> */}
+                        <p> {props.countComments} </p>
 
                 {comment && <Comments post_id={props.id} />}
             </div>

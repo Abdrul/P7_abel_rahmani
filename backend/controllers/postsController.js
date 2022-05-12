@@ -10,14 +10,12 @@ const { Comments } = require('../config/db');
 exports.getAllPosts = async (req, res) => {
     try {
         const postsUser = await Posts.findAll({order: [['id', 'DESC']], include: ["comments"]});
-        for(const post of postsUser) {
-            const commsCount = await Comments.count({where : {post_id: post.id}});
-            post.commsCount = commsCount;
-            // console.log(post.commsCount);
-        }
+        // for(const post of postsUser) {
+        //     const commsCount = await Comments.count({where : {post_id: post.id}});
+        //     post.commsCount = commsCount;
+        // };
         const message = `Tous les posts on été récupérée`;
-        res.json({ message, data: postsUser });
-        // console.log(postsUser[0].comments.length);
+        res.json({ message, data: postsUser});
     } catch(error) {
         const message = `Les posts ne sont pas accessible, réessayez dans quelques instants`;
         res.status(500).json({ message, data: error});
@@ -30,7 +28,9 @@ exports.getAllPosts = async (req, res) => {
 
 exports.getOnePost = async (req, res) => {
     try {
-        const postsUser = await Posts.findByPk(req.params.id);
+        const postsUser = await Posts.findOne({where: {id: req.params.id} , include: ["comments"]});
+        // const commsCount = await Comments.count({where : {post_id: postsUser.id}});
+        // postsUser.commsCount = commsCount;
         const message = `Un post à été trouvé`;
         res.json({ message, data: postsUser });
     } catch(error) {

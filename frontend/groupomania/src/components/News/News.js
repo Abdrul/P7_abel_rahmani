@@ -4,7 +4,6 @@ import './News.css';
 import authHeader from '../AuthHeader'
 import IconAddImg from '../../assets/iconAddimg.svg'
 import { getPosts, addPosts } from '../../feature/fetchPosts.slice';
-import { getCount } from '../../feature/counterComments';
 import { useSelector, useDispatch } from 'react-redux';
 import { getOneUser } from '../../feature/fetchUser.slice';
 
@@ -18,7 +17,6 @@ export default function News() {
     const dispatch = useDispatch();
     const allPost = useSelector(state => state.post.dataPosts);
     const testRedux = useSelector(state => state.user.dataUser.imageUrl)
-    // const count = useSelector(state => console.log(state))
 
     const [error, setError] = useState();
     const [post, setPost] = useState({
@@ -76,7 +74,6 @@ export default function News() {
     };
 
     const handleOnchangeImg = (e) => {
-        // console.log(e);
         const files = e.target.files[0];
         setPost({
             ...post,
@@ -96,9 +93,8 @@ export default function News() {
                 });
                 
                 let data = await response.json();
-                // console.log(data.data[1].comments.length);
-                // dispatch(getCount(data.data.comments.length))
-                // console.log(data.data.commsCount);
+
+                console.log(data);
                 dispatch(getPosts(data.data))
     
             } catch (err) {
@@ -146,7 +142,7 @@ export default function News() {
             {allPost.map((post) => {
                 return (
                     <Post 
-                    // countComments={post.comments.length}
+                    countComments={post.comments.length}
                     text={post.text} 
                     imageUrl={post.imageUrl} 
                     id={post.id} key={post.id} 

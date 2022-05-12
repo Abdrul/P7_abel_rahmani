@@ -1,5 +1,7 @@
 const { Posts } = require('../config/db');
 const fs = require('fs');
+const { Comments } = require('../config/db');
+
 
 
 // Logique terminaison GET ALL
@@ -7,9 +9,15 @@ const fs = require('fs');
 
 exports.getAllPosts = async (req, res) => {
     try {
-        const postsUser = await Posts.findAll({order: [['id', 'DESC']]});
+        const postsUser = await Posts.findAll({order: [['id', 'DESC']], include: ["comments"]});
+        for(const post of postsUser) {
+            const commsCount = await Comments.count({where : {post_id: post.id}});
+            post.commsCount = commsCount;
+            // console.log(post.commsCount);
+        }
         const message = `Tous les posts on été récupérée`;
         res.json({ message, data: postsUser });
+        // console.log(postsUser[0].comments.length);
     } catch(error) {
         const message = `Les posts ne sont pas accessible, réessayez dans quelques instants`;
         res.status(500).json({ message, data: error});

@@ -4,6 +4,7 @@ const { User } = require('../config/db');
 
 module.exports = (req, res, next) => {
     const authorizationHeader = req.headers.authorization;
+    console.log(authorizationHeader);
 
     if (!authorizationHeader) {
         const message = `Vous n'avez pas fourni de jeton d'authentification. Ajoutez-en un dans l'en-tête de la requête.`;
@@ -27,25 +28,6 @@ module.exports = (req, res, next) => {
         };
     });
 
-    // const token2 = req.cookies.jwt; 
-    // console.log(token2);
-    // if(token2) {
-    //     jwt.verify(token2, process.env.SECRET, async (err, docs) => {
-    //         if(err) {
-    //             res.locals.user = null;
-    //             res.clearCookie("jwt");
-    //             next();
-    //         } else {
-    //             let user2 = await User.findOne(docs.id);
-    //             res.locals.user = user2;
-    //             console.log(res.locals.user);
-    //             next();
-    //         };
-    //     });
-    // } else {
-    //     res.locals.user = null;
-    //     next();
-    // }
 };
 
 

@@ -3,19 +3,22 @@ import Post from './Post';
 import './News.css';
 import authHeader from '../AuthHeader'
 import IconAddImg from '../../assets/iconAddimg.svg'
-import { getPosts, addPosts, deletePosts } from '../../feature/fetchPosts.slice';
+import { getPosts, addPosts } from '../../feature/fetchPosts.slice';
+import { getCount } from '../../feature/counterComments';
 import { useSelector, useDispatch } from 'react-redux';
 import { getOneUser } from '../../feature/fetchUser.slice';
 
 export default function News() {
 
     const id = JSON.parse(localStorage.getItem('user'));
+    const token = JSON.parse(localStorage.getItem('token'));
     // const imageUser = JSON.parse(localStorage.getItem('imageUser'));
     // const firstname = JSON.parse(localStorage.getItem('firstname'));
 
     const dispatch = useDispatch();
     const allPost = useSelector(state => state.post.dataPosts);
     const testRedux = useSelector(state => state.user.dataUser.imageUrl)
+    // const count = useSelector(state => console.log(state))
 
     const [error, setError] = useState();
     const [post, setPost] = useState({
@@ -54,13 +57,15 @@ export default function News() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(post.text !== '' || post.imageUrl !== '') {
-            setPost(clearPost);
-            setError();
-            fetchPosts();
-        } else {
-            setError('Vous ne pouvez pas envoyer de post vide');
-        };
+        if(token) {
+            if(post.text !== '' || post.imageUrl !== '') {
+                setPost(clearPost);
+                setError();
+                fetchPosts();
+            } else {
+                setError('Vous ne pouvez pas envoyer de post vide');
+            };
+        }
     };
 
     const handleOnchangeText = (e) => {
@@ -91,6 +96,9 @@ export default function News() {
                 });
                 
                 let data = await response.json();
+                // console.log(data.data[1].comments.length);
+                // dispatch(getCount(data.data.comments.length))
+                // console.log(data.data.commsCount);
                 dispatch(getPosts(data.data))
     
             } catch (err) {
@@ -136,9 +144,9 @@ export default function News() {
             </div>
 
             {allPost.map((post) => {
-
                 return (
                     <Post 
+                    // countComments={post.comments.length}
                     text={post.text} 
                     imageUrl={post.imageUrl} 
                     id={post.id} key={post.id} 

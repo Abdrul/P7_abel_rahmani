@@ -77,11 +77,3 @@ exports.deleteUser = async (req, res) => {
     }
 };
 
-
-exports.followUser = async (req, res) => {
-
-};
-
-exports.unfollowUser = async (req, res) => {
-
-};

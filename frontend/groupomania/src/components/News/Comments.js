@@ -16,6 +16,7 @@ export default function Comments(props) {
     const dispatch = useDispatch();
     const allComments = useSelector(state => state.comments.dataComments);
 
+
     const [error, setError] = useState();
     const [comment, setComment] = useState({
         text: "",
@@ -33,11 +34,14 @@ export default function Comments(props) {
     useEffect(() => {
         const fetchAllComments = async () => {
             try {
+                let formData = new FormData();
+                formData.append('post_id', props.post_id);
                 let response = await fetch(`http://localhost:8080/api/comments`, {
                     method: 'GET',
                     headers : {
                         "Authorization": authHeader()
-                    }
+                    },
+
                 });
                 
                 let data = await response.json();

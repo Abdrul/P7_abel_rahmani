@@ -40,9 +40,9 @@ export default function SignIn(props) {
                 })
                 
                 let data = await response.json();
+                console.log(data.message);
 
                 const token = data.token;
-                const userId = data.user.id;
 
                 if(data.message === "L'email est incorrect") {
                     setError(data.message)
@@ -50,15 +50,14 @@ export default function SignIn(props) {
                     setError(data.message)
                 } else {
                     localStorage.setItem('token', JSON.stringify(token));
+                    const userId = data.user.id;   
                     localStorage.setItem('user', JSON.stringify(userId));
                     navigate('/home');
                 }
 
-                return data
             } else {
                 setError('Veuillez remplir les champs')
             }
-
             
         } catch(error) {
             console.log(error);

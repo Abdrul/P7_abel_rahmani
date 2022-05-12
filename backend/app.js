@@ -9,6 +9,7 @@ const authRoutes = require('./routes/authRoute');
 const userRoutes = require('./routes/usersRoute');
 const postsRoutes = require('./routes/postsRoute');
 const commentsRoutes = require('./routes/commentsRoute');
+const likeRoutes = require('./routes/likesRoute');
 
 const app = express();
 
@@ -37,6 +38,8 @@ app.use('/api/posts', postsRoutes);
 app.use('/api/comments', commentsRoutes);
 
 app.use('/api/user', userRoutes);
+
+app.use('/api', likeRoutes);
 
 
 

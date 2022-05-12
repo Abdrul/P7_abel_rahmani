@@ -1,11 +1,12 @@
 const { Comments } = require('../config/db');
+const { Posts } = require('../config/db');
 
 // Logique terminaison GET ALL
 
 
 exports.getAllComments = async (req, res) => {
     try {
-        const commentsUser = await Comments.findAll();
+        const commentsUser = await Comments.findAll({include: ['post']});
         const message = `Tous les commentaires on été récupérée`;
         res.json({ message, data: commentsUser });
     } catch(error) {
@@ -20,7 +21,7 @@ exports.getAllComments = async (req, res) => {
 
 exports.getOneComment = async (req, res) => {
     try {
-        const commentsUser = await Comments.findByPk(req.params.id);
+        const commentsUser = await Comments.findOne({include: [{model: Posts, as:'post'}], where:{id: req.params.id}});
         const message = `Un commentaire à été trouvé`;
         res.json({ message, data: commentsUser });
     } catch(error) {

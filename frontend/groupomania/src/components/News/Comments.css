@@ -1,7 +1,7 @@
 .container-form-content {
     border-top: 1px solid #CAB8FF;
     padding-top: 25px;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 
@@ -62,4 +62,26 @@
     width: 25px;
     display: flex;
     align-self: flex-end;
+}
+
+
+.heart{
+background: url("img.png") no-repeat;
+background-position: left;
+background-size: 2900%;
+height: 50px;
+width: 70px;
+}
+
+.heart.heart-active{
+animation: animate .8s steps(28) 1;
+background-position: right;
+}
+@keyframes animate {
+0%{
+    background-position: left;
+}
+100%{
+    background-position: right;
+}
 }

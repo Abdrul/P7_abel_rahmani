@@ -1,34 +1,26 @@
 import React, {useState, useEffect} from 'react'
 import IconComment from '../../assets/iconComment.svg'
-import IconLike from '../../assets/iconLike.svg'
 import IconDelete from '../../assets/iconDelete.svg'
 import IconEdit from '../../assets/iconEdit.svg'
 import IconAddImg from '../../assets/iconAddimg.svg'
 import Comments from './Comments'
-
 import authHeader from '../AuthHeader'
 import { useDispatch, useSelector } from 'react-redux'
 import { deletePosts, editPosts } from '../../feature/fetchPosts.slice'
 
 
 
+ 
 export default function Post(props) {
+
 
     const id = JSON.parse(localStorage.getItem('user'));
     const dispatch = useDispatch();
-    // const allPost = useSelector(state => state.post.dataPosts);
-    // console.log(allPost);
+    const allComments = useSelector(state => state.comments.dataComments);
+    const allPost = useSelector(state => state.post.dataPosts);
 
-    // const [a, ab] = useState(allPost.map((a, b) => {
-    //     return ({
-    //         text: a.text
-    //     })
-    // }))
 
-    // console.log(a[0].text);
-
-    // console.log(a);
-
+    const [test, setTest] = useState(false);
     const [edit, setEdit] = useState(false);
     const [comment, setComment] = useState(false);
     const [error, setError] = useState();
@@ -37,9 +29,6 @@ export default function Post(props) {
         imageUrl: props.imageUrl,
         image: ''
     });
-
-
-
 
     const handleDeleteFetch = async () => {
         try {
@@ -84,9 +73,8 @@ export default function Post(props) {
 
         } catch(error) {
             console.log(error);
-        }
-    }
-
+        };
+    };
 
     const handleEdit = () => {
         setEdit(!edit)
@@ -100,7 +88,7 @@ export default function Post(props) {
             setEdit(false);
             editPostFetch();
             setError();
-        }
+        };
     };
 
     const handleOnchangeText = (e) => {
@@ -119,9 +107,65 @@ export default function Post(props) {
         });
     };
 
-    const testModal = () => {
+    const handleModalComment = () => {
         setComment(!comment);
+    };
+
+
+    const handleLikeFecth = async () => {
+        try {
+            let response = await fetch(`http://localhost:8080/api/like`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": authHeader()
+                }, 
+                body: JSON.stringify({
+                    post_id: props.id
+                })
+            })
+
+            let data = await response.json()
+            console.log(data);
+
+        } catch(error) {
+            console.log(error);
+        }
     }
+
+    const handleUnlikeFecth = async () => {
+        try {
+            let response = await fetch(`http://localhost:8080/api/unlike`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": authHeader()
+                }, 
+                body: JSON.stringify({
+                    post_id: props.id
+                })
+            })
+
+            let data = await response.json()
+            console.log(data);
+
+        } catch(error) {
+            console.log(error);
+        };
+    };
+
+    const toggleClass = () => {
+        setTest(!test);
+        if(test) {
+            handleUnlikeFecth();
+        } else{
+            handleLikeFecth();
+        };
+
+        let newArr = allComments.filter(p => p.post_id.includes(props.id))
+        // console.log(newArr.length);
+
+    };
 
 
     return (
@@ -181,16 +225,22 @@ export default function Post(props) {
                     <img src={form.imageUrl} alt='img-about-post' />
                 </div>
                 }
+
+                
+
                 <div className='like-comment-post'>
-                    <img src={IconLike} alt="icon-like" />
-                    <img src={IconComment} onClick={testModal} alt="icon-comment" />
+                    <span className={test ? "heart heart-active" : "heart"} onClick={toggleClass}></span>
+                        {/* <img src={IconLike} onClick={testLike} alt="icon-like" className='icon-like'/> */}
+                    <img src={IconComment} onClick={handleModalComment} alt="icon-comment" />
+                
                 </div>
+                        {/* <p> {props.countComments} </p> */}
+
                 {comment && <Comments post_id={props.id} />}
             </div>
 
             }
             
-
         </>
     )
 }

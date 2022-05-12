@@ -2,6 +2,7 @@ const { Sequelize, DataTypes } = require('sequelize');
 const UserModel = require('../model/userModel');
 const PostsModel = require('../model/postsModel');
 const CommentsModel = require('../model/commentsModel');
+const LikesModel = require('../model/likesModel');
 
 
 
@@ -18,10 +19,14 @@ const sequelize = new Sequelize(
 const User = UserModel(sequelize, DataTypes);
 const Posts = PostsModel(sequelize, DataTypes);
 const Comments = CommentsModel(sequelize, DataTypes);
+const Likes = LikesModel(sequelize, DataTypes);
 
 User.hasMany(Posts, { foreignKey: 'user_id', onDelete: 'CASCADE'});
-Posts.hasMany(Comments, { foreignKey: 'post_id', onDelete: 'CASCADE' });
+Posts.hasMany(Comments, { foreignKey: 'post_id', as:'comments', onDelete: 'CASCADE' });
 User.hasMany(Comments, { foreignKey: 'user_id'});
+Posts.hasMany(Likes, {foreignKey: 'post_id'});
+User.hasMany(Likes, {foreignKey: 'user_id'});
+Comments.belongsTo(Posts, { foreignKey:'post_id', as: "post" })
 
 const initDb = () => {
     return sequelize.sync({ force: true }) 
@@ -32,5 +37,5 @@ const initDb = () => {
 
 
 module.exports = {
-    initDb, User, Posts, Comments
+    initDb, User, Posts, Comments, Likes
 };

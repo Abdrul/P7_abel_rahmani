@@ -9,11 +9,18 @@ const { Comments } = require('../config/db');
 
 exports.getAllPosts = async (req, res) => {
     try {
-        const postsUser = await Posts.findAll({order: [['id', 'DESC']], include: ["comments"]});
-        // for(const post of postsUser) {
-        //     const commsCount = await Comments.count({where : {post_id: post.id}});
-        //     post.commsCount = commsCount;
-        // };
+        const postsUser = await Posts.findAll({order: [['createdAt', 'DESC']], include: ["comments", "likes"], where: {canDisplay: true}});
+        const message = `Tous les posts on été récupérée`;
+        res.json({ message, data: postsUser});
+    } catch(error) {
+        const message = `Les posts ne sont pas accessible, réessayez dans quelques instants`;
+        res.status(500).json({ message, data: error});
+    };
+};
+
+exports.getAllPostsToModerate = async (req, res) => {
+    try {
+        const postsUser = await Posts.findAll({order: [['createdAt', 'DESC']], where: {canDisplay: false}});
         const message = `Tous les posts on été récupérée`;
         res.json({ message, data: postsUser});
     } catch(error) {
@@ -45,12 +52,6 @@ exports.getOnePost = async (req, res) => {
 exports.createPosts = async (req, res) => {
     try {
         req.body.user_id = req.params.userId;
-        // const postsBody = req.body
-        // let postsBody = {
-        //     text: req.body.text,
-        //     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-        //     user_id: req.body.user_id
-        // }
         const postsObject = req.file ? 
         {
             text: req.body.text,
@@ -60,6 +61,7 @@ exports.createPosts = async (req, res) => {
 
         const postsUser = await Posts.create({
             ...postsObject,
+            canDisplay: false
         });
         const message = `Votre posts à été crée`;
         res.status(201).json({ message, data: postsUser });
@@ -99,10 +101,27 @@ exports.updatePosts = async (req, res) => {
 
     } catch(error) {
         const message = `Le post n'as pas pu être modifié`;
-        console.log(error)
         res.status(500).json({ message, data: error });
     };
 };
+
+exports.moderatePosts = async (req,res) => {
+
+    try {
+        const id = req.params.id;
+        const postsObject = 
+        { canDisplay: req.body.canDisplay};
+
+        const postsUpdate = await Posts.update(postsObject, { where: { id: id }});
+        const message = `Le post peut être affiché`;
+        res.json({ message, data: postsUpdate });
+
+    } catch(error) {
+        const message = `Le post ne peut pas être affiché`;
+        res.status(500).json({ message, data: error });
+    };
+
+}
 
 
 

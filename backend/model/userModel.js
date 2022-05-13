@@ -28,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         imageUrl: {
             type: DataTypes.STRING,
+        }, 
+        admin: {
+            type:DataTypes.BOOLEAN,
+            defaultValue: false
         }
     });
 };

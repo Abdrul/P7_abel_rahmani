@@ -82,6 +82,8 @@ export default function News() {
         });
     };
 
+
+
     useEffect(() => {
         const fetchAllPosts = async () => {
             try {
@@ -94,8 +96,8 @@ export default function News() {
                 
                 let data = await response.json();
 
-                console.log(data);
-                dispatch(getPosts(data.data))
+                console.log(data.data);
+                dispatch(getPosts(data.data));
     
             } catch (err) {
                 console.log(err);
@@ -140,14 +142,16 @@ export default function News() {
             </div>
 
             {allPost.map((post) => {
-                return (
-                    <Post 
-                    countComments={post.comments.length}
-                    text={post.text} 
-                    imageUrl={post.imageUrl} 
-                    id={post.id} key={post.id} 
-                    user_id={post.user_id} />
-                )
+
+                    return (
+                        <Post 
+                        liked={post.likes?.find(like => like.user_id === id)? true : false}
+                        countComments={post.comments?.length}
+                        text={post.text} 
+                        imageUrl={post.imageUrl} 
+                        id={post.id} key={post.id} 
+                        user_id={post.user_id} />
+                        )
             })}
 
         </>

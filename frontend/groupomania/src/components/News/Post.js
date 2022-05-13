@@ -10,17 +10,15 @@ import { deletePosts, editPosts } from '../../feature/fetchPosts.slice'
 
 
 
- 
+
 export default function Post(props) {
 
 
     const id = JSON.parse(localStorage.getItem('user'));
     const dispatch = useDispatch();
-    const allComments = useSelector(state => state.comments.dataComments);
-    const allPost = useSelector(state => state.post.dataPosts);
 
 
-    const [test, setTest] = useState(false);
+    const [test, setTest] = useState(props.liked);
     const [edit, setEdit] = useState(false);
     const [comment, setComment] = useState(false);
     const [error, setError] = useState();
@@ -162,10 +160,10 @@ export default function Post(props) {
             handleLikeFecth();
         };
 
-        let newArr = allComments.filter(p => p.post_id.includes(props.id))
-        // console.log(newArr.length);
 
     };
+
+    
 
 
     return (
@@ -235,8 +233,10 @@ export default function Post(props) {
                 
                 </div>
                         <p> {props.countComments} </p>
+                        {/* <p> {props.liked} </p> */}
 
-                {comment && <Comments post_id={props.id} />}
+
+                {comment && <Comments post_id={props.id} test={props.countComments} />}
             </div>
 
             }

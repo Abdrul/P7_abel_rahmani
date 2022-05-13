@@ -44,18 +44,10 @@ exports.login = (req, res) => {
             }
 
             const token = jwt.sign(
-                { userId: user.id },
+                { userId: user.id, admin: user.admin },
                 `${process.env.SECRET}`,
                 {expiresIn: '24h'}
             );
-        
-            // const cookieOptions = {
-            //     expires: new Date(
-            //         Date.now() + process.env.SECRET * 24 * 60 * 60 * 1000
-            //         ),
-            //         httpOnly: true
-            //     };
-            //     res.cookie('jwt', token, cookieOptions);
 
             const message = `Vous avez été connecté avec succès`;
             return res.json({ message, user, token })
@@ -67,28 +59,3 @@ exports.login = (req, res) => {
     });
 };
 
-
-// logout
-
-exports.logout = async (req, res) => {
-    try {
-        const user = await User.findOne({ where: { email: req.body.email }});
-        const token = jwt.sign(
-            { userId: user.id },
-            `${process.env.SECRET}`,
-            { expiresIn: 1 }
-            );
-
-        const message = `Disconnected`;
-        res.json({ message, data: user})
-
-    } catch(error) {
-        const message = `disconnect doesnt work`;
-        res.status(500).json({ message, data: error});
-    };
-    // res.clearCookie("jwt");
-    // res.status(200).json("Deconnected");
-};
-
-// res.cookie ("name", "value", {option like maxAge})
-// res.redirect('/')

@@ -34,9 +34,12 @@
 .container-comment-user {
     display: flex;
     flex-direction: column;
+}
+
+.display-user-comment {
     border-top: 1px solid #CAB8FF;
     padding-top: 10px;
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
 
@@ -84,4 +87,18 @@ background-position: right;
 100%{
     background-position: right;
 }
+}
+
+.profil-comment-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 10px;
+}
+
+.profil-comment-user img {
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    object-fit: cover;
 }

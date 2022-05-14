@@ -3,7 +3,7 @@ import './Comments.css'
 import IconSend from '../../assets/iconSend.svg'
 import IconAddImg from '../../assets/iconAddimg.svg'
 import IconDelete from '../../assets/iconDelete.svg'
-import IconEdit from '../../assets/iconEdit.svg'
+import Pdp from '../../assets/pdp.svg'
 import {useDispatch, useSelector} from 'react-redux'
 import { getComments, addComments, editComments, deleteComments } from '../../feature/fetchComments.slice'
 import authHeader from '../AuthHeader'
@@ -15,6 +15,7 @@ export default function Comments(props) {
 
     const dispatch = useDispatch();
     const allComments = useSelector(state => state.comments.dataComments);
+    const allUsers = useSelector(state => state.allUsers.dataUsers);
     const allPost = useSelector(state => state.post.dataPosts);
 
 
@@ -159,8 +160,19 @@ export default function Comments(props) {
             {allComments.map((comment, index) => {
                 
                 return (                            
-                    <div key={comment.id}>
-                    
+                    <div key={comment.id} className="display-user-comment">
+                        {allUsers.map(user => {
+                            return (
+                            <div key={user.id}>
+                                {comment.user_id === user.id &&
+                                    <div className='profil-comment-user'>
+                                    <img src={user.imageUrl ? user.imageUrl : Pdp} alt="" />
+                                    <p>{user.firstname} </p>
+                                    </div>
+                                }
+                            </div>
+                            )
+                        })}
                     {props.post_id === comment.post_id &&
                         <div className='container-comment-user'>
                             <p> {comment.text} </p>

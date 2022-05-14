@@ -40,8 +40,6 @@ export default function SignIn(props) {
                 })
                 
                 let data = await response.json();
-                console.log(data.message);
-
                 const token = data.token;
 
                 if(data.message === "L'email est incorrect") {
@@ -52,6 +50,8 @@ export default function SignIn(props) {
                     localStorage.setItem('token', JSON.stringify(token));
                     const userId = data.user.id;   
                     localStorage.setItem('user', JSON.stringify(userId));
+                    const admin = data.user.admin
+                    localStorage.setItem('admin', JSON.stringify(admin));
                     navigate('/home');
                 }
 

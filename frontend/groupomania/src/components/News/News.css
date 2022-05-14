@@ -25,16 +25,20 @@
 } 
 
 
-.test {
+.profil-post-user {
     display: flex;
     align-items: center;
     gap: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #CAB8FF;
+    margin-bottom: 5px;
 }
 
-.test img {
-    width: 50px;
-    height: 50px;
+.profil-post-user img {
+    width: 30px;
+    height: 30px;
     border-radius: 5px;
+    object-fit: cover;
 }
 
 

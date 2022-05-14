@@ -8,7 +8,7 @@ import {Routes, Route} from 'react-router-dom'
 
 function App() {
 
-
+  const token = JSON.parse(localStorage.getItem('token'));
 
   return (
     <div className='body-app'>
@@ -20,7 +20,10 @@ function App() {
 
           <Route path='/home' element={<Thread/>} />
 
+          {token ?
           <Route path='/profil' element={<Profil/>} />
+          : "pas accès"
+          }
 
         </Routes>
 

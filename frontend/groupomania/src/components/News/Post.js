@@ -5,6 +5,7 @@ import IconEdit from '../../assets/iconEdit.svg'
 import IconAddImg from '../../assets/iconAddimg.svg'
 import Comments from './Comments'
 import authHeader from '../AuthHeader'
+import Pdp from '../../assets/pdp.svg'
 import { useDispatch, useSelector } from 'react-redux'
 import { deletePosts, editPosts } from '../../feature/fetchPosts.slice'
 
@@ -15,6 +16,8 @@ export default function Post(props) {
 
 
     const id = JSON.parse(localStorage.getItem('user'));
+    const admin = JSON.parse(localStorage.getItem('admin'));
+    const allUsers = useSelector(state => state.allUsers.dataUsers);
     const dispatch = useDispatch();
 
 
@@ -152,6 +155,24 @@ export default function Post(props) {
         };
     };
 
+    const deletePostByAdmin = async () => {
+        try {
+            let response = await fetch(`http://localhost:8080/api/posts/moderate/${props.id}`, {
+                method: 'DELETE',
+                headers: {
+                    "Authorization": authHeader()
+                }
+            })
+
+            let data = await response.json()
+            
+            dispatch(deletePosts(props.id));
+
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
     const toggleClass = () => {
         setTest(!test);
         if(test) {
@@ -159,88 +180,90 @@ export default function Post(props) {
         } else{
             handleLikeFecth();
         };
-
-
     };
-
-    
 
 
     return (
         <>
 
-        {edit ?
-        <div className='container-post'>
-            <div className='container-header-news'>
-                {/* <div className='test'>
-                    <img src={imageUser} alt="" />
-                    <p>{firstname} </p>
-                </div> */}
-                <div className='title-post-news'>
-                    <h2>Votre post</h2>
-                    <p className='error-post'> {error} </p>
-                </div>
-            </div>
-            <form onSubmit={handleSubmit} className='form-news'>
-                <div>
-                    <textarea onChange={handleOnchangeText} defaultValue={form.text}></textarea>
-                </div>
-                <div className='form-news-post-img'>
-                    <img src={form.imageUrl} />
-                </div>
-                <div className='form-news-action'>
-                    <label htmlFor="edit-img">
-                        <img src={IconAddImg} alt="icon-add-img" />
-                    </label>
-                        <input onChange={handleOnchangeImg} type="file" name="file" id='edit-img' className='input-file-news' />
-                    <div>
-                        <button className='btn-publish'>Publier</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-        
-        : 
-
-            <div className='container-post-get'>
-                {/* <div className='container-header-news'>
-                    <div className='test'>
+            {edit ?
+            <div className='container-post'>
+                <div className='container-header-news'>
+                    {/* <div className='test'>
                         <img src={imageUser} alt="" />
                         <p>{firstname} </p>
+                    </div> */}
+                    <div className='title-post-news'>
+                        <h2>Votre post</h2>
+                        <p className='error-post'> {error} </p>
                     </div>
-                </div> */}
-                <div className='text-post'>
-                    <p>{form.text}</p>
-                    {props.user_id === id &&
-                    <div className='edit-delete-post'>
-                        <img onClick={handleEdit} src={IconEdit} alt="icon-edit" />
-                        <img onClick={handleDeleteFetch} src={IconDelete} alt="icon-edit" />
-                    </div>
-                    }
                 </div>
-                {form.imageUrl && 
-                <div className='image-post'>
-                    <img src={form.imageUrl} alt='img-about-post' />
+                <form onSubmit={handleSubmit} className='form-news'>
+                    <div>
+                        <textarea onChange={handleOnchangeText} defaultValue={form.text}></textarea>
+                    </div>
+                    <div className='form-news-post-img'>
+                        <img src={form.imageUrl} />
+                    </div>
+                    <div className='form-news-action'>
+                        <label htmlFor="edit-img">
+                            <img src={IconAddImg} alt="icon-add-img" />
+                        </label>
+                            <input onChange={handleOnchangeImg} type="file" name="file" id='edit-img' className='input-file-news' />
+                        <div>
+                            <button className='btn-publish'>Publier</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            : 
+                <div className='container-post-get'>
+                    <div className='container-header-news'>
+                        {allUsers.map(user => {
+                            return (
+                            <div key={user.id}>
+                                {props.user_id === user.id &&
+                                    <div className='profil-post-user'>
+                                    <img src={user.imageUrl ? user.imageUrl : Pdp} alt="" />
+                                    <p>{user.firstname} </p>
+                                    </div>
+                                }
+                            </div>
+                            )
+                        })}
+                    </div>
+                    <div className='text-post'>
+                        <p>{form.text}</p>
+                        {props.user_id === id  &&
+                        <div className='edit-delete-post'>
+                            <img onClick={handleEdit} src={IconEdit} alt="icon-edit" />
+                            <img onClick={handleDeleteFetch} src={IconDelete} alt="icon-delete" />
+                        </div>
+                        }
+                        {admin === true  &&
+                        <div className='edit-delete-post'>
+                            <img onClick={handleEdit} src={IconEdit} alt="icon-edit" />
+                            <img onClick={deletePostByAdmin} src={IconDelete} alt="icon-delete" />
+                        </div>
+                        }
+                    </div>
+                    {form.imageUrl && 
+                    <div className='image-post'>
+                        <img src={form.imageUrl} alt='img-about-post' />
+                    </div>
+                    }    
+
+                    <div className='like-comment-post'>
+                        <span className={test ? "heart heart-active" : "heart"} onClick={toggleClass}></span>
+                            {/* <img src={IconLike} onClick={testLike} alt="icon-like" className='icon-like'/> */}
+                        <img src={IconComment} onClick={handleModalComment} alt="icon-comment" />
+                    </div>
+                            {/* <p> {props.countComments} </p> */}
+                            {/* <p> {props.liked} </p> */}
+                    {comment && <Comments post_id={props.id} test={props.countComments} />}
                 </div>
                 }
-
-                
-
-                <div className='like-comment-post'>
-                    <span className={test ? "heart heart-active" : "heart"} onClick={toggleClass}></span>
-                        {/* <img src={IconLike} onClick={testLike} alt="icon-like" className='icon-like'/> */}
-                    <img src={IconComment} onClick={handleModalComment} alt="icon-comment" />
-                
-                </div>
-                        <p> {props.countComments} </p>
-                        {/* <p> {props.liked} </p> */}
-
-
-                {comment && <Comments post_id={props.id} test={props.countComments} />}
-            </div>
-
-            }
-            
         </>
-    )
-}
+    );
+};

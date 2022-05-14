@@ -76,23 +76,11 @@ const fetchUserSlice = createSlice({
     reducers: {
         getOneUser: (state, action) => {
             state.dataUser = action.payload
-        },
-        // deleteUser: (state, action) => {
-        //     state.dataUser = state.filter((user) => user.id !== action.payload);
-        // },
-        // editUser: (state, {payload}) => {
-        //     state.dataUser.map((user) => {
-        //         if(user.id === payload.id) {
-        //             user.email = payload.email
-        //             user.firstname = payload.firstname
-        //         }
-        //     })
-
-        // }
+        }
     }
 });
 
 
-export const {getOneUser, deleteUser , editUser} = fetchUserSlice.actions;
+export const {getOneUser} = fetchUserSlice.actions;
 
 export default fetchUserSlice.reducer;

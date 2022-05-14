@@ -6,13 +6,12 @@ import IconAddImg from '../../assets/iconAddimg.svg'
 import { getPosts, addPosts } from '../../feature/fetchPosts.slice';
 import { useSelector, useDispatch } from 'react-redux';
 import { getOneUser } from '../../feature/fetchUser.slice';
+import { getAllUsers } from '../../feature/fetchAllUsers';
 
 export default function News() {
 
     const id = JSON.parse(localStorage.getItem('user'));
     const token = JSON.parse(localStorage.getItem('token'));
-    // const imageUser = JSON.parse(localStorage.getItem('imageUser'));
-    // const firstname = JSON.parse(localStorage.getItem('firstname'));
 
     const dispatch = useDispatch();
     const allPost = useSelector(state => state.post.dataPosts);
@@ -95,8 +94,7 @@ export default function News() {
                 });
                 
                 let data = await response.json();
-
-                console.log(data.data);
+                // console.log(data.data);
                 dispatch(getPosts(data.data));
     
             } catch (err) {
@@ -106,6 +104,29 @@ export default function News() {
     
             fetchAllPosts();
     }, [dispatch]);
+
+
+    useEffect(() => {
+        const fetchAllUser = async () => {
+            try {
+                let response = await fetch(`http://localhost:8080/api/user`, {
+                    method: 'GET',
+                    headers : {
+                        "Authorization": authHeader()
+                    }
+                });
+                
+                let data = await response.json();
+                // console.log(data);
+                dispatch(getAllUsers(data.data));
+    
+            } catch (err) {
+                console.log(err);
+            };
+        }
+    
+        fetchAllUser();
+    }, []);
 
 
 
@@ -142,9 +163,12 @@ export default function News() {
             </div>
 
             {allPost.map((post) => {
-
+                // console.log(post.user?.firstname);
+                // console.log(post.user?.imageUrl);
                     return (
                         <Post 
+                        // firstname={post.user?.firstname}
+                        // pfp={post.user?.imageUrl}
                         liked={post.likes?.find(like => like.user_id === id)? true : false}
                         countComments={post.comments?.length}
                         text={post.text} 

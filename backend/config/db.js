@@ -22,11 +22,12 @@ const Comments = CommentsModel(sequelize, DataTypes);
 const Likes = LikesModel(sequelize, DataTypes);
 
 User.hasMany(Posts, { foreignKey: 'user_id', onDelete: 'CASCADE'});
+Posts.belongsTo(User, {as: "user", foreignKey:'user_id'})
 Posts.hasMany(Comments, { foreignKey: 'post_id', as:'comments', onDelete: 'CASCADE' });
 User.hasMany(Comments, { foreignKey: 'user_id'});
+Comments.belongsTo(Posts, { foreignKey:'post_id', as: "post" });
 Posts.hasMany(Likes, {foreignKey: 'post_id', as: 'likes', onDelete: 'CASCADE'});
 User.hasMany(Likes, {foreignKey: 'user_id'});
-Comments.belongsTo(Posts, { foreignKey:'post_id', as: "post" });
 
 
 const initDb = () => {

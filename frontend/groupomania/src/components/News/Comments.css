@@ -34,13 +34,16 @@
 .container-comment-user {
     display: flex;
     flex-direction: column;
-}
-
-.display-user-comment {
     border-top: 1px solid #CAB8FF;
     padding-top: 10px;
     margin-top: 10px;
 }
+
+/* .display-user-comment {
+    border-top: 1px solid #CAB8FF;
+    padding-top: 10px;
+    margin-top: 10px;
+} */
 
 
 .error-comments {
@@ -94,6 +97,7 @@ background-position: right;
     align-items: center;
     gap: 10px;
     padding-bottom: 10px;
+    padding-top: 15px;
 }
 
 .profil-comment-user img {

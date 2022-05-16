@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
 const fetchPostsSlice = createSlice({
     name: "posts",
     initialState: {
@@ -22,7 +23,15 @@ const fetchPostsSlice = createSlice({
                     post.image = payload.image
                 }
             })
+        },
+        addCommentsOnPosts: (state, {payload}) => {
+            state.dataPosts.map((post) => {
+                if(post.id === payload.id) {
+                    state.post.comments.push(payload.id)
+                }
+            })
         }
+        
     }
 
 });

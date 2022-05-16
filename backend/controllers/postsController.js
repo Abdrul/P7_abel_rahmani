@@ -59,15 +59,17 @@ exports.createPosts = async (req, res) => {
             imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
         } : { text: req.body.text, user_id: req.body.user_id };
 
-        const postsUser = await Posts.create({
-            ...postsObject,
-            canDisplay: false
-        });
+        const postsUser = await Posts.create(
+            postsObject,
+            // canDisplay: false,
+            )
+        const postsUserIncludeCommentsUser = await Posts.findOne({where: {id: postsUser.id} , include: ["comments", "user"]});
         const message = `Votre posts à été crée`;
-        res.status(201).json({ message, data: postsUser });
+        res.status(201).json({ message, data: postsUserIncludeCommentsUser });
     } catch(error) {
         const message = `Votre posts n'as pas pu être ajouté`;
         res.status(500).json({ message, data:error});
+        console.log(error);
     };
 };
 

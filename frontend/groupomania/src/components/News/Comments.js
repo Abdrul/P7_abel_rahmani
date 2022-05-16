@@ -7,6 +7,7 @@ import Pdp from '../../assets/pdp.svg'
 import {useDispatch, useSelector} from 'react-redux'
 import { getComments, addComments, editComments, deleteComments } from '../../feature/fetchComments.slice'
 import authHeader from '../AuthHeader'
+import { addPosts } from '../../feature/fetchPosts.slice'
 
 
 export default function Comments(props) {
@@ -15,9 +16,8 @@ export default function Comments(props) {
 
     const dispatch = useDispatch();
     const allComments = useSelector(state => state.comments.dataComments);
-    const allUsers = useSelector(state => state.allUsers.dataUsers);
     const allPost = useSelector(state => state.post.dataPosts);
-
+    console.log(allComments);
 
     const [error, setError] = useState();
     const [comment, setComment] = useState({
@@ -161,18 +161,15 @@ export default function Comments(props) {
                 
                 return (                            
                     <div key={comment.id} className="display-user-comment">
-                        {allUsers.map(user => {
-                            return (
-                            <div key={user.id}>
-                                {comment.user_id === user.id &&
+                            <div key={comment.id}>
+                                {comment.post_id === props.post_id &&
                                     <div className='profil-comment-user'>
-                                    <img src={user.imageUrl ? user.imageUrl : Pdp} alt="" />
-                                    <p>{user.firstname} </p>
+                                    <img src={comment.user.imageUrl ? comment.user.imageUrl : Pdp} alt="" />
+                                    <p>{comment.user.firstname} </p>
                                     </div>
                                 }
                             </div>
-                            )
-                        })}
+
                     {props.post_id === comment.post_id &&
                         <div className='container-comment-user'>
                             <p> {comment.text} </p>

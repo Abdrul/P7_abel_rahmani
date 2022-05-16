@@ -6,7 +6,7 @@ const { Posts } = require('../config/db');
 
 exports.getAllComments = async (req, res) => {
     try {
-        const commentsUser = await Comments.findAll({include: ['post']});
+        const commentsUser = await Comments.findAll({include: ['post', 'user']});
         const message = `Tous les commentaires on été récupérée`;
         res.json({ message, data: commentsUser });
     } catch(error) {
@@ -21,7 +21,7 @@ exports.getAllComments = async (req, res) => {
 
 exports.getOneComment = async (req, res) => {
     try {
-        const commentsUser = await Comments.findOne({include: [{model: Posts, as:'post'}], where:{id: req.params.id}});
+        const commentsUser = await Comments.findOne({include: ['post'], where:{id: req.params.id}});
         const message = `Un commentaire à été trouvé`;
         res.json({ message, data: commentsUser });
     } catch(error) {
@@ -48,8 +48,9 @@ exports.createComments = async (req, res) => {
         const commentsUser = await Comments.create({
             ...commentsObject,
         });
+        const commentsUserIncludePostUser = await Comments.findOne({include: ['post', "user"], where:{id: commentsUser.id}});
         const message = `Votre posts à été crée`;
-        res.status(201).json({ message, data: commentsUser });
+        res.status(201).json({ message, data: commentsUserIncludePostUser });
     } catch(error) {
         const message = `Votre posts n'as pas pu être ajouté`;
         res.status(500).json({ message, data:error});

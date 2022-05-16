@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import IconComment from '../../assets/iconComment.svg'
 import IconDelete from '../../assets/iconDelete.svg'
 import IconEdit from '../../assets/iconEdit.svg'
@@ -19,7 +19,6 @@ export default function Post(props) {
     const admin = JSON.parse(localStorage.getItem('admin'));
     const allUsers = useSelector(state => state.allUsers.dataUsers);
     const dispatch = useDispatch();
-
 
     const [test, setTest] = useState(props.liked);
     const [edit, setEdit] = useState(false);
@@ -189,10 +188,6 @@ export default function Post(props) {
             {edit ?
             <div className='container-post'>
                 <div className='container-header-news'>
-                    {/* <div className='test'>
-                        <img src={imageUser} alt="" />
-                        <p>{firstname} </p>
-                    </div> */}
                     <div className='title-post-news'>
                         <h2>Votre post</h2>
                         <p className='error-post'> {error} </p>
@@ -220,18 +215,10 @@ export default function Post(props) {
             : 
                 <div className='container-post-get'>
                     <div className='container-header-news'>
-                        {allUsers.map(user => {
-                            return (
-                            <div key={user.id}>
-                                {props.user_id === user.id &&
-                                    <div className='profil-post-user'>
-                                    <img src={user.imageUrl ? user.imageUrl : Pdp} alt="" />
-                                    <p>{user.firstname} </p>
-                                    </div>
-                                }
-                            </div>
-                            )
-                        })}
+                        <div className='profil-post-user'>
+                            <img src={props.pfp ? props.pfp : Pdp} alt="" />
+                            <p>{props.firstname} </p>
+                        </div>
                     </div>
                     <div className='text-post'>
                         <p>{form.text}</p>
@@ -256,11 +243,10 @@ export default function Post(props) {
 
                     <div className='like-comment-post'>
                         <span className={test ? "heart heart-active" : "heart"} onClick={toggleClass}></span>
-                            {/* <img src={IconLike} onClick={testLike} alt="icon-like" className='icon-like'/> */}
                         <img src={IconComment} onClick={handleModalComment} alt="icon-comment" />
                     </div>
                             {/* <p> {props.countComments} </p> */}
-                            {/* <p> {props.liked} </p> */}
+                            <p> {props.countComments} </p>
                     {comment && <Comments post_id={props.id} test={props.countComments} />}
                 </div>
                 }

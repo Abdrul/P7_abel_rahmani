@@ -5,9 +5,8 @@ import IconAddImg from '../../assets/iconAddimg.svg'
 import IconDelete from '../../assets/iconDelete.svg'
 import Pdp from '../../assets/pdp.svg'
 import {useDispatch, useSelector} from 'react-redux'
-import { getComments, addComments, editComments, deleteComments } from '../../feature/fetchComments.slice'
+import { getComments, addComments, deleteComments } from '../../feature/fetchComments.slice'
 import authHeader from '../AuthHeader'
-import { addPosts } from '../../feature/fetchPosts.slice'
 
 
 export default function Comments(props) {
@@ -16,8 +15,6 @@ export default function Comments(props) {
 
     const dispatch = useDispatch();
     const allComments = useSelector(state => state.comments.dataComments);
-    const allPost = useSelector(state => state.post.dataPosts);
-    console.log(allComments);
 
     const [error, setError] = useState();
     const [comment, setComment] = useState({

@@ -126,7 +126,6 @@ export default function Post(props) {
             })
 
             let data = await response.json()
-            console.log(data);
 
         } catch(error) {
             console.log(error);
@@ -147,7 +146,6 @@ export default function Post(props) {
             })
 
             let data = await response.json()
-            console.log(data);
 
         } catch(error) {
             console.log(error);

@@ -16,7 +16,6 @@ export default function News() {
     const dispatch = useDispatch();
     const allPost = useSelector(state => state.post.dataPosts);
 
-
     const [error, setError] = useState();
     const [post, setPost] = useState({
         text: "",

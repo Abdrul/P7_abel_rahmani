@@ -158,3 +158,13 @@
     padding-right: 5px;
     padding-bottom: 10px;
 }
+
+
+@media only screen and (min-width: 768px) {
+    .container-post {
+        width: 550px;
+    }
+    .container-post-get {
+        width: 500px;
+}
+}

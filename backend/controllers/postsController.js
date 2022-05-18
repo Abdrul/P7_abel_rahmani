@@ -63,7 +63,7 @@ exports.createPosts = async (req, res) => {
             postsObject,
             // canDisplay: false,
             )
-        const postsUserIncludeCommentsUser = await Posts.findOne({where: {id: postsUser.id} , include: ["comments", "user"]});
+        const postsUserIncludeCommentsUser = await Posts.findOne({where: {id: postsUser.id} , include: ["comments", "user", "likes"]});
         const message = `Votre posts à été crée`;
         res.status(201).json({ message, data: postsUserIncludeCommentsUser });
     } catch(error) {

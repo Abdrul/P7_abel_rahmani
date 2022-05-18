@@ -5,7 +5,6 @@ import authHeader from '../AuthHeader'
 import IconAddImg from '../../assets/iconAddimg.svg'
 import { getPosts, addPosts } from '../../feature/fetchPosts.slice';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllUsers } from '../../feature/fetchAllUsers';
 
 
 export default function News() {
@@ -15,6 +14,7 @@ export default function News() {
 
     const dispatch = useDispatch();
     const allPost = useSelector(state => state.post.dataPosts);
+    // console.log(allPost);
 
     const [error, setError] = useState();
     const [post, setPost] = useState({
@@ -141,7 +141,7 @@ export default function News() {
                         pfp={post.user.imageUrl}
                         liked={post.likes?.find(like => like.user_id === id)? true : false}
                         countComments={post.comments.length}
-                        countLikes={post.likes?.length}
+                        countLikes={post.likes.length}
                         text={post.text} 
                         imageUrl={post.imageUrl} 
                         id={post.id} key={post.id} 

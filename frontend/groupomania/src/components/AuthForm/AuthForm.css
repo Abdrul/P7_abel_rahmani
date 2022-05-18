@@ -67,8 +67,6 @@
 @media only screen and (min-width: 768px) {
     .global-modal {
         width: 45%;
-        margin: 0 auto;
-        padding-top: 30px;
     }
 
     .btn-sign {
@@ -83,3 +81,17 @@
         text-align: center;
     }
 }
+
+
+@media only screen and (min-width: 1024px) {
+    .global-modal {
+        width: 25%;
+    }
+    .btn-sign {
+        width: 80%;
+    }
+
+    .btn-log {
+        width: 80%;
+    }
+}  

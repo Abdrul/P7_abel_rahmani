@@ -6,8 +6,8 @@ import IconAddImg from '../../assets/iconAddimg.svg'
 import Comments from './Comments'
 import authHeader from '../AuthHeader'
 import Pdp from '../../assets/pdp.svg'
-import { useDispatch, useSelector } from 'react-redux'
-import { deletePosts, editPosts } from '../../feature/fetchPosts.slice'
+import { useDispatch } from 'react-redux'
+import { deletePosts, editPosts, addLikesOnPosts, removeLikesOnPosts } from '../../feature/fetchPosts.slice'
 
 
 
@@ -17,7 +17,6 @@ export default function Post(props) {
 
     const id = JSON.parse(localStorage.getItem('user'));
     const admin = JSON.parse(localStorage.getItem('admin'));
-    const allUsers = useSelector(state => state.allUsers.dataUsers);
     const dispatch = useDispatch();
 
     const [test, setTest] = useState(props.liked);
@@ -125,7 +124,8 @@ export default function Post(props) {
                 })
             })
 
-            let data = await response.json()
+            let data = await response.json();
+            dispatch(addLikesOnPosts(data.data))
 
         } catch(error) {
             console.log(error);
@@ -145,7 +145,8 @@ export default function Post(props) {
                 })
             })
 
-            let data = await response.json()
+            let data = await response.json();
+            dispatch(removeLikesOnPosts(data.data))
 
         } catch(error) {
             console.log(error);
@@ -243,9 +244,9 @@ export default function Post(props) {
                         <span className={test ? "heart heart-active" : "heart"} onClick={toggleClass}></span>
                         <img src={IconComment} onClick={handleModalComment} alt="icon-comment" />
                     </div>
-                            {/* <p> {props.countComments} </p> */}
+                            <p> {props.countLikes} </p>
                             <p> {props.countComments} </p>
-                    {comment && <Comments post_id={props.id} test={props.countComments} />}
+                    {comment && <Comments post_id={props.id} />}
                 </div>
                 }
         </>

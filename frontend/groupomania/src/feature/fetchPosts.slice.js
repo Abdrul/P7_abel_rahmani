@@ -26,9 +26,26 @@ const fetchPostsSlice = createSlice({
         },
         addCommentsOnPosts: (state, {payload}) => {
             state.dataPosts.map((post) => {
-                if(post.id === payload.id) {
-                    state.post.comments.push(payload.id)
+                if(post.id === payload.post_id) {
+                    post.comments.push(payload.id)
                 }
+            })
+        },
+        deleteCommentsOnPosts: (state, {payload}) => {
+            state.dataPosts.map((post) => {
+                post.comments = post.comments.filter((comment) => comment.id !== payload)
+            })
+        },
+        addLikesOnPosts: (state, {payload}) => {
+            state.dataPosts.map((post) => {
+                if(post.id === payload.post_id) {
+                    post.likes.push(payload)
+                }
+            })
+        },
+        removeLikesOnPosts: (state, {payload}) => {
+            state.dataPosts.map((post) => {
+                post.likes = post.likes.filter((like) => like.id !== payload)
             })
         }
         
@@ -37,6 +54,6 @@ const fetchPostsSlice = createSlice({
 });
 
 
-export const {getPosts, addPosts, deletePosts, editPosts} = fetchPostsSlice.actions;
+export const {getPosts, addPosts, deletePosts, editPosts, addCommentsOnPosts, addLikesOnPosts, deleteCommentsOnPosts, removeLikesOnPosts} = fetchPostsSlice.actions;
 
 export default fetchPostsSlice.reducer;

@@ -7,6 +7,8 @@ import Pdp from '../../assets/pdp.svg'
 import {useDispatch, useSelector} from 'react-redux'
 import { getComments, addComments, deleteComments } from '../../feature/fetchComments.slice'
 import authHeader from '../AuthHeader'
+import { addCommentsOnPosts, deleteCommentsOnPosts } from '../../feature/fetchPosts.slice'
+
 
 
 export default function Comments(props) {
@@ -15,6 +17,8 @@ export default function Comments(props) {
 
     const dispatch = useDispatch();
     const allComments = useSelector(state => state.comments.dataComments);
+    const allPost = useSelector(state => state.post.dataPosts);
+    // console.log(allComments);
 
     const [error, setError] = useState();
     const [comment, setComment] = useState({
@@ -54,6 +58,8 @@ export default function Comments(props) {
         fetchAllComments();
     }, [dispatch]);
 
+    // const [comments1, setComment1] = useState([])
+
     const fetchComments = async () => {
         try {
 
@@ -72,6 +78,8 @@ export default function Comments(props) {
         
         let data = await response.json();
         dispatch(addComments(data.data));
+        dispatch(addCommentsOnPosts(data.data))
+        // setComment1(test => [...test, data.data])
 
         } catch (err) {
             console.log(err);
@@ -122,6 +130,7 @@ export default function Comments(props) {
         
                     let data = await response.json()
                     dispatch(deleteComments(commentId));
+                    dispatch(deleteCommentsOnPosts(commentId))
 
         
                 } catch (err) {
@@ -163,6 +172,7 @@ export default function Comments(props) {
                                     <div className='profil-comment-user'>
                                     <img src={comment.user.imageUrl ? comment.user.imageUrl : Pdp} alt="" />
                                     <p>{comment.user.firstname} </p>
+                                    {/* <p>  {comments1.length} </p> */}
                                     </div>
                                 }
                             </div>

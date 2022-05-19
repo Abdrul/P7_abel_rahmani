@@ -27,13 +27,13 @@ const fetchPostsSlice = createSlice({
         addCommentsOnPosts: (state, {payload}) => {
             state.dataPosts.map((post) => {
                 if(post.id === payload.post_id) {
-                    post.comments.push(payload.id)
+                    post.comments.push(payload)
                 }
             })
         },
         deleteCommentsOnPosts: (state, {payload}) => {
             state.dataPosts.map((post) => {
-                post.comments = post.comments.filter((comment) => comment.id !== payload)
+                post.comments = post.comments.filter((comment) => comment.id !== payload);
             })
         },
         addLikesOnPosts: (state, {payload}) => {
@@ -45,7 +45,7 @@ const fetchPostsSlice = createSlice({
         },
         removeLikesOnPosts: (state, {payload}) => {
             state.dataPosts.map((post) => {
-                post.likes = post.likes.filter((like) => like.id !== payload)
+                post.likes = post.likes.filter((like) => like.id !== payload);
             })
         }
         

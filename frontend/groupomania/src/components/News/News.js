@@ -14,7 +14,6 @@ export default function News() {
 
     const dispatch = useDispatch();
     const allPost = useSelector(state => state.post.dataPosts);
-    // console.log(allPost);
 
     const [error, setError] = useState();
     const [post, setPost] = useState({
@@ -135,6 +134,7 @@ export default function News() {
             </div>
 
             {allPost.map((post) => {
+                console.log(post.likes);
                     return (
                         <Post 
                         firstname={post.user.firstname}

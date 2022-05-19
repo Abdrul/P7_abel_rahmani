@@ -58,7 +58,6 @@ export default function Comments(props) {
         fetchAllComments();
     }, [dispatch]);
 
-    // const [comments1, setComment1] = useState([])
 
     const fetchComments = async () => {
         try {
@@ -79,7 +78,6 @@ export default function Comments(props) {
         let data = await response.json();
         dispatch(addComments(data.data));
         dispatch(addCommentsOnPosts(data.data))
-        // setComment1(test => [...test, data.data])
 
         } catch (err) {
             console.log(err);
@@ -132,7 +130,6 @@ export default function Comments(props) {
                     dispatch(deleteComments(commentId));
                     dispatch(deleteCommentsOnPosts(commentId))
 
-        
                 } catch (err) {
                     console.log(err);
                 }

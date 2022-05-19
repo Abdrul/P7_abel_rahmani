@@ -242,10 +242,11 @@ export default function Post(props) {
 
                     <div className='like-comment-post'>
                         <span className={test ? "heart heart-active" : "heart"} onClick={toggleClass}></span>
-                        <img src={IconComment} onClick={handleModalComment} alt="icon-comment" />
-                    </div>
-                            <p> {props.countLikes} </p>
+                        <div className='countComment'>
+                            <img src={IconComment} onClick={handleModalComment} alt="icon-comment" />
                             <p> {props.countComments} </p>
+                        </div>
+                    </div>
                     {comment && <Comments post_id={props.id} />}
                 </div>
                 }

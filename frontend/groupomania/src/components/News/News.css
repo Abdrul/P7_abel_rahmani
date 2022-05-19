@@ -159,6 +159,12 @@
     padding-bottom: 10px;
 }
 
+.countComment {
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+}
+
 
 @media only screen and (min-width: 768px) {
     .container-post {

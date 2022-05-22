@@ -1,18 +1,16 @@
 import React, {useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import authHeader from '../AuthHeader'
-import { deletePostsAdmin, getAllPostAdmin, editPostsCanDisplay } from '../../feature/fetchAdmin';
-import './Admin.css'
-import Navbar from '../Navbar/Navbar';
-import IconDelete from '../../assets/iconDelete.svg'
-import IconEdit from '../../assets/iconEdit.svg'
+import authHeader from '../components/AuthHeader';
+import {deletePostsAdmin, getAllPostAdmin, editPostsCanDisplay} from '../feature/fetchAdmin'
+import Navbar from '../components/Navbar/Navbar';
+import IconDelete from '../assets/iconDelete.svg'
+import IconEdit from '../assets/iconEdit.svg'
 
 
 
 
 export default function Admin() {
 
-    const admin = JSON.parse(localStorage.getItem('admin'));
 
     const dispatch = useDispatch();
     const allPostsToModerate = useSelector(state => state.admin.dataAdmin)
@@ -70,11 +68,9 @@ export default function Admin() {
         const editPostFetch = async () => {
             try {
     
-                // const data = {
-                //     id: props.id,
-                //     text: form.text,
-                //     imageUrl: form.imageUrl
-                // }
+                const data = {
+                    canDisplay: canDisplay.canDisplay
+                }
     
                 // let formData = new FormData();
                 // formData.append('canDisplay', canDisplay.canDisplay);
@@ -88,7 +84,7 @@ export default function Admin() {
                     body: JSON.stringify({ canDisplay:  canDisplay.canDisplay })
                 })
     
-                dispatch(editPostsCanDisplay(canDisplay.canDisplay));
+                dispatch(editPostsCanDisplay(data));
     
             } catch(error) {
                 console.log(error);

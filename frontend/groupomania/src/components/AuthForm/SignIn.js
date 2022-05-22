@@ -46,15 +46,18 @@ export default function SignIn(props) {
                     setError(data.message)
                 } else if(data.message === "Le mot de passe est incorrect") {
                     setError(data.message)
+                } else if (data.user.admin === true) {
+                    localStorage.setItem('token', JSON.stringify(token));
+                    const userId = data.user.id;   
+                    localStorage.setItem('user', JSON.stringify(userId));
+                    navigate('/homeAdmin');
+
                 } else {
                     localStorage.setItem('token', JSON.stringify(token));
                     const userId = data.user.id;   
                     localStorage.setItem('user', JSON.stringify(userId));
-                    const admin = data.user.admin
-                    localStorage.setItem('admin', JSON.stringify(admin));
                     navigate('/home');
                 }
-
             } else {
                 setError('Veuillez remplir les champs')
             }

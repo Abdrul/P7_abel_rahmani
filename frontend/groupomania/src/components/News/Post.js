@@ -153,23 +153,23 @@ export default function Post(props) {
         };
     };
 
-    const deletePostByAdmin = async () => {
-        try {
-            let response = await fetch(`http://localhost:8080/api/posts/moderate/${props.id}`, {
-                method: 'DELETE',
-                headers: {
-                    "Authorization": authHeader()
-                }
-            })
+    // const deletePostByAdmin = async () => {
+    //     try {
+    //         let response = await fetch(`http://localhost:8080/api/posts/moderate/${props.id}`, {
+    //             method: 'DELETE',
+    //             headers: {
+    //                 "Authorization": authHeader()
+    //             }
+    //         })
 
-            let data = await response.json()
+    //         let data = await response.json()
             
-            dispatch(deletePosts(props.id));
+    //         dispatch(deletePosts(props.id));
 
-        } catch(error) {
-            console.log(error);
-        }
-    }
+    //     } catch(error) {
+    //         console.log(error);
+    //     }
+    // }
 
     const toggleClass = () => {
         setTest(!test);
@@ -227,12 +227,12 @@ export default function Post(props) {
                             <img onClick={handleDeleteFetch} src={IconDelete} alt="icon-delete" />
                         </div>
                         }
-                        {admin === true  &&
+                        {/* {admin === true  &&
                         <div className='edit-delete-post'>
                             <img onClick={handleEdit} src={IconEdit} alt="icon-edit" />
                             <img onClick={deletePostByAdmin} src={IconDelete} alt="icon-delete" />
                         </div>
-                        }
+                        } */}
                     </div>
                     {form.imageUrl && 
                     <div className='image-post'>

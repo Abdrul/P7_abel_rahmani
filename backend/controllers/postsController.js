@@ -9,7 +9,7 @@ const { Comments } = require('../config/db');
 
 exports.getAllPosts = async (req, res) => {
     try {
-        const postsUser = await Posts.findAll({order: [['createdAt', 'DESC']], include: ["comments", "likes", "user"]});
+        const postsUser = await Posts.findAll({order: [['createdAt', 'DESC']], include: ["comments", "likes", "user"], where: {canDisplay: true}});
         const message = `Tous les posts on été récupérée`;
         res.json({ message, data: postsUser});
     } catch(error) {
@@ -18,16 +18,16 @@ exports.getAllPosts = async (req, res) => {
     };
 };
 
-// exports.getAllPostsToModerate = async (req, res) => {
-//     try {
-//         const postsUser = await Posts.findAll({order: [['createdAt', 'DESC']], where: {canDisplay: false}});
-//         const message = `Tous les posts on été récupérée`;
-//         res.json({ message, data: postsUser});
-//     } catch(error) {
-//         const message = `Les posts ne sont pas accessible, réessayez dans quelques instants`;
-//         res.status(500).json({ message, data: error});
-//     };
-// };
+exports.getAllPostsToModerate = async (req, res) => {
+    try {
+        const postsUser = await Posts.findAll({order: [['createdAt', 'DESC']], where: {canDisplay: false}});
+        const message = `Tous les posts on été récupérée`;
+        res.json({ message, data: postsUser});
+    } catch(error) {
+        const message = `Les posts ne sont pas accessible, réessayez dans quelques instants`;
+        res.status(500).json({ message, data: error});
+    };
+};
 
 
 // Logique terminaison GET ONE 
@@ -59,10 +59,10 @@ exports.createPosts = async (req, res) => {
             imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
         } : { text: req.body.text, user_id: req.body.user_id };
 
-        const postsUser = await Posts.create(
-            postsObject,
-            // canDisplay: false,
-            )
+        const postsUser = await Posts.create({
+            ...postsObject,
+            canDisplay: false,
+        })
         const postsUserIncludeCommentsUser = await Posts.findOne({where: {id: postsUser.id} , include: ["comments", "user", "likes"]});
         const message = `Votre posts à été crée`;
         res.status(201).json({ message, data: postsUserIncludeCommentsUser });
@@ -107,23 +107,23 @@ exports.updatePosts = async (req, res) => {
     };
 };
 
-// exports.moderatePosts = async (req,res) => {
+exports.moderatePosts = async (req,res) => {
 
-//     try {
-//         const id = req.params.id;
-//         const postsObject = 
-//         { canDisplay: req.body.canDisplay};
+    try {
+        const id = req.params.id;
+        const postsObject = 
+        { canDisplay: req.body.canDisplay};
 
-//         const postsUpdate = await Posts.update(postsObject, { where: { id: id }});
-//         const message = `Le post peut être affiché`;
-//         res.json({ message, data: postsUpdate });
+        const postsUpdate = await Posts.update(postsObject, { where: { id: id }});
+        const message = `Le post peut être affiché`;
+        res.json({ message, data: postsUpdate });
 
-//     } catch(error) {
-//         const message = `Le post ne peut pas être affiché`;
-//         res.status(500).json({ message, data: error });
-//     };
+    } catch(error) {
+        const message = `Le post ne peut pas être affiché`;
+        res.status(500).json({ message, data: error });
+    };
 
-// }
+}
 
 
 

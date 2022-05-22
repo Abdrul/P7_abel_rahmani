@@ -10,11 +10,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         imageUrl: {
             type: DataTypes.STRING,
+        },
+        canDisplay: {
+            type:DataTypes.BOOLEAN,
+            defaultValue: false
         }
-        // canDisplay: {
-        //     type:DataTypes.BOOLEAN,
-        //     defaultValue: false
-        // }
     });
 };
 

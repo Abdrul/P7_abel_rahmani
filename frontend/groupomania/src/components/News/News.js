@@ -134,7 +134,7 @@ export default function News() {
             </div>
 
             {allPost.map((post) => {
-                console.log(post.likes);
+
                     return (
                         <Post 
                         firstname={post.user.firstname}

@@ -4,12 +4,14 @@ import Thread from './pages/Thread';
 import Profil from './pages/Profil';
 import {Routes, Route} from 'react-router-dom'
 import Error from './components/Error';
+import Admin from './components/Admin/Admin';
 
 
 
 function App() {
 
   const token = JSON.parse(localStorage.getItem('token'));
+  const admin = JSON.parse(localStorage.getItem('admin'));
 
   return (
     <div className='body-app'>
@@ -19,7 +21,10 @@ function App() {
 
           <Route path='/' element={<Home/>} />
 
-          <Route path='/home' element={<Thread/>} />
+          {admin ?
+          <Route path='/home' element={<Admin/>} />
+          : <Route path='/home' element={<Thread/>} />
+          }
 
           {token ?
           <Route path='/profil' element={<Profil/>} />

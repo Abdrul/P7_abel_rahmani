@@ -17,7 +17,6 @@ export default function Comments(props) {
 
     const dispatch = useDispatch();
     const allComments = useSelector(state => state.comments.dataComments);
-    const allPost = useSelector(state => state.post.dataPosts);
     // console.log(allComments);
 
     const [error, setError] = useState();

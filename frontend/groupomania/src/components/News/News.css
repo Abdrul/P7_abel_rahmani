@@ -144,13 +144,10 @@
     align-items: center;
 }
 
-.like-comment-post img{
-    padding-top: 10px;
-}
+
 
 .like-comment-post img:nth-child(1) {
-    width: 26px;
-    padding-left: 5px;
+    width: 20px;
 }
 
 .like-comment-post img:nth-child(2) {

@@ -15,9 +15,9 @@ const fetchAdminSlice = createSlice({
         },
         editPostsCanDisplay: (state, {payload}) => {
             state.dataAdmin.map((post) => {
-                if(post.id === payload.id) {
+                // if(post.id === payload.id) {
                     post.canDisplay = payload.canDisplay
-                }
+                // }
             })
         },
     }

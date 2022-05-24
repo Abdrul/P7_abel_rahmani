@@ -1,11 +1,15 @@
 import React,{useState, useRef} from 'react'
 import './AuthForm.css'
 import { useNavigate } from 'react-router-dom';
-
+import { useDispatch, useSelector } from 'react-redux';
+// import { addUser } from '../../feature/fetchUser.slice';
+import { getOneUser2 } from '../../feature/testUser2.slice';
 
 export default function SignIn(props) {
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
 
     const [error, setError] = useState('');
 
@@ -41,21 +45,18 @@ export default function SignIn(props) {
                 
                 let data = await response.json();
                 const token = data.token;
+                dispatch(getOneUser2(data))
 
                 if(data.message === "L'email est incorrect") {
                     setError(data.message)
                 } else if(data.message === "Le mot de passe est incorrect") {
                     setError(data.message)
-                } else if (data.user.admin === true) {
-                    localStorage.setItem('token', JSON.stringify(token));
-                    const userId = data.user.id;   
-                    localStorage.setItem('user', JSON.stringify(userId));
-                    navigate('/homeAdmin');
-
                 } else {
                     localStorage.setItem('token', JSON.stringify(token));
                     const userId = data.user.id;   
                     localStorage.setItem('user', JSON.stringify(userId));
+                    const admin = data.user.admin
+                    localStorage.setItem('admin', JSON.stringify(admin));
                     navigate('/home');
                 }
             } else {

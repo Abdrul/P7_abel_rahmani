@@ -5,34 +5,34 @@ import Profil from './pages/Profil';
 import {Routes, Route} from 'react-router-dom'
 import Error from './components/Error';
 import Admin from './pages/Admin';
+import {TokenContext} from './components/AuthProvider'
+import {useState, useEffect} from 'react'
+import {useSelector} from 'react-redux'
 
 
 
 
 function App() {
 
-  const token = JSON.parse(localStorage.getItem('token'));
-  // console.log(token);
+  const user = useSelector(state => state.user2.dataUser2)
+
+
 
   return (
     <div className='body-app'>
-        
+
 
         <Routes>
 
           <Route path='/' element={<Home/>} />
 
-          <Route path='/home' element={<Thread/>} />
+          <Route path='/home' element={user.user?.admin ? <Admin/>: <Thread/>} />
 
-          <Route path='homeAdmin' element={<Admin/>} />
+          {/* <Route path='homeAdmin' element={<Admin/>} /> */}
 
-          <Route path='/profil' element={token ? <Profil/> : <Error/>} />
+          <Route path='/profil' element={user.token ? <Profil/>: <Error/>  } />
 
         </Routes>
-
-
-
-
 
     </div>
   );

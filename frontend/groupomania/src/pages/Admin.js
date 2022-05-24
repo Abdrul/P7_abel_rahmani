@@ -4,7 +4,7 @@ import authHeader from '../components/AuthHeader';
 import {deletePostsAdmin, getAllPostAdmin, editPostsCanDisplay} from '../feature/fetchAdmin'
 import Navbar from '../components/Navbar/Navbar';
 import IconDelete from '../assets/iconDelete.svg'
-import IconEdit from '../assets/iconEdit.svg'
+import IconCheck from '../assets/iconCheck.svg'
 
 
 
@@ -84,7 +84,7 @@ export default function Admin() {
                     body: JSON.stringify({ canDisplay:  canDisplay.canDisplay })
                 })
     
-                dispatch(editPostsCanDisplay(data));
+                dispatch(editPostsCanDisplay(canDisplay.canDisplay));
     
             } catch(error) {
                 console.log(error);
@@ -109,7 +109,7 @@ export default function Admin() {
                             <p>{post.text}</p>
 
                                 <div className='edit-delete-post'>
-                                    <img src={IconEdit} onClick={() => handleEditByAdmin(post.id)}   alt="icon-edit" />
+                                    <img src={IconCheck} onClick={() => handleEditByAdmin(post.id)}   alt="icon-check" />
                                     <img src={IconDelete} onClick={() => handleDeleteByAdmin(post.id)}  alt="icon-delete" />
                                 </div>                            
 

@@ -28,8 +28,6 @@ function App() {
 
           <Route path='/home' element={user.user?.admin ? <Admin/>: <Thread/>} />
 
-          {/* <Route path='homeAdmin' element={<Admin/>} /> */}
-
           <Route path='/profil' element={user.token ? <Profil/>: <Error/>  } />
 
         </Routes>

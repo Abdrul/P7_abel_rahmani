@@ -32,7 +32,7 @@ User.hasMany(Likes, {foreignKey: 'user_id'});
 
 
 const initDb = () => {
-    return sequelize.sync({ force: true }) 
+    return sequelize.sync() 
     .then(() => {
         console.log("La base de donnée est bien synchro")
     })
